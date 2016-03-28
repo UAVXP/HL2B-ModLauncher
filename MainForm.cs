@@ -185,7 +185,7 @@ namespace ModLauncher
 			}
 		}
 
-		private void BugreporterMain_Load(object sender, EventArgs e)
+		private void MainForm_Load(object sender, EventArgs e)
 		{
 			modList.Items.Clear();
 			List<string> listOfMods = new List<string>();

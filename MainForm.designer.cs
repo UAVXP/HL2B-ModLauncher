@@ -68,7 +68,7 @@
 			this.move.Controls.Add(this.close);
 			this.move.Location = new System.Drawing.Point(0, 0);
 			this.move.Name = "move";
-			this.move.Size = new System.Drawing.Size(352, 21);
+			this.move.Size = new System.Drawing.Size(302, 21);
 			this.move.TabIndex = 12;
 			this.move.MouseDown += new System.Windows.Forms.MouseEventHandler(this.move_MouseDown);
 			// 
@@ -88,7 +88,7 @@
 			this.minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.minimize.BackColor = System.Drawing.Color.Transparent;
 			this.minimize.BackgroundImage = global::ModLauncher.Properties.Resources.minimize001;
-			this.minimize.Location = new System.Drawing.Point(325, 6);
+			this.minimize.Location = new System.Drawing.Point(275, 6);
 			this.minimize.Name = "minimize";
 			this.minimize.Size = new System.Drawing.Size(7, 9);
 			this.minimize.TabIndex = 13;
@@ -100,7 +100,7 @@
 			this.close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.close.BackColor = System.Drawing.Color.Transparent;
 			this.close.BackgroundImage = global::ModLauncher.Properties.Resources.close001;
-			this.close.Location = new System.Drawing.Point(338, 6);
+			this.close.Location = new System.Drawing.Point(288, 6);
 			this.close.Name = "close";
 			this.close.Size = new System.Drawing.Size(9, 9);
 			this.close.TabIndex = 9;
@@ -162,7 +162,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::ModLauncher.Properties.Resources.background002;
-			this.ClientSize = new System.Drawing.Size(352, 122);
+			this.ClientSize = new System.Drawing.Size(302, 122);
 			this.Controls.Add(this.closeBut);
 			this.Controls.Add(this.comButton);
 			this.Controls.Add(this.label2);
@@ -173,7 +173,7 @@
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "LeakNet - Bugreporter";
-			this.Load += new System.EventHandler(this.BugreporterMain_Load);
+			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.move.ResumeLayout(false);
 			this.move.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
