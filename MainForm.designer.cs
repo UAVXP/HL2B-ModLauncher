@@ -38,6 +38,8 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.comButton = new System.Windows.Forms.Button();
 			this.closeBut = new System.Windows.Forms.Button();
+			this.additionalParamsBut = new System.Windows.Forms.Button();
+			this.parametersText = new System.Windows.Forms.TextBox();
 			this.move.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.minimize)).BeginInit();
@@ -63,9 +65,9 @@
 			this.move.BackColor = System.Drawing.Color.Transparent;
 			this.move.BackgroundImage = global::ModLauncher.Properties.Resources.background003;
 			this.move.Controls.Add(this.pictureBox1);
-			this.move.Controls.Add(this.title);
 			this.move.Controls.Add(this.minimize);
 			this.move.Controls.Add(this.close);
+			this.move.Controls.Add(this.title);
 			this.move.Location = new System.Drawing.Point(0, 0);
 			this.move.Name = "move";
 			this.move.Size = new System.Drawing.Size(302, 21);
@@ -138,7 +140,7 @@
 			this.comButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.comButton.Location = new System.Drawing.Point(25, 60);
 			this.comButton.Name = "comButton";
-			this.comButton.Size = new System.Drawing.Size(173, 45);
+			this.comButton.Size = new System.Drawing.Size(173, 32);
 			this.comButton.TabIndex = 19;
 			this.comButton.Text = "Run modification";
 			this.comButton.UseVisualStyleBackColor = false;
@@ -151,18 +153,47 @@
 			this.closeBut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.closeBut.Location = new System.Drawing.Point(204, 60);
 			this.closeBut.Name = "closeBut";
-			this.closeBut.Size = new System.Drawing.Size(72, 45);
+			this.closeBut.Size = new System.Drawing.Size(72, 32);
 			this.closeBut.TabIndex = 20;
 			this.closeBut.Text = "Close game";
 			this.closeBut.UseVisualStyleBackColor = false;
 			this.closeBut.Click += new System.EventHandler(this.closeBut_Click);
+			// 
+			// additionalParamsBut
+			// 
+			this.additionalParamsBut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
+			this.additionalParamsBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.additionalParamsBut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.additionalParamsBut.Image = global::ModLauncher.Properties.Resources.arrowDown;
+			this.additionalParamsBut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.additionalParamsBut.Location = new System.Drawing.Point(143, 98);
+			this.additionalParamsBut.Name = "additionalParamsBut";
+			this.additionalParamsBut.Size = new System.Drawing.Size(133, 23);
+			this.additionalParamsBut.TabIndex = 21;
+			this.additionalParamsBut.Text = "Additional parameters";
+			this.additionalParamsBut.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.additionalParamsBut.UseVisualStyleBackColor = false;
+			this.additionalParamsBut.Click += new System.EventHandler(this.additionalParamsBut_Click);
+			// 
+			// parametersText
+			// 
+			this.parametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.parametersText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.parametersText.ForeColor = System.Drawing.Color.Silver;
+			this.parametersText.Location = new System.Drawing.Point(25, 144);
+			this.parametersText.Name = "parametersText";
+			this.parametersText.Size = new System.Drawing.Size(251, 20);
+			this.parametersText.TabIndex = 22;
+			this.parametersText.Leave += new System.EventHandler(this.parametersText_Leave);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::ModLauncher.Properties.Resources.background002;
-			this.ClientSize = new System.Drawing.Size(302, 122);
+			this.ClientSize = new System.Drawing.Size(302, 182);
+			this.Controls.Add(this.parametersText);
+			this.Controls.Add(this.additionalParamsBut);
 			this.Controls.Add(this.closeBut);
 			this.Controls.Add(this.comButton);
 			this.Controls.Add(this.label2);
@@ -174,6 +205,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "LeakNet - Bugreporter";
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.move.ResumeLayout(false);
 			this.move.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -195,5 +227,7 @@
 		private System.Windows.Forms.Button comButton;
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Button closeBut;
+		private System.Windows.Forms.Button additionalParamsBut;
+		private System.Windows.Forms.TextBox parametersText;
 	}
 }

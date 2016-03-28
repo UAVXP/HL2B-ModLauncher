@@ -45,6 +45,8 @@ namespace ModLauncher
 
 		private void close_Click(object sender, EventArgs e)
 		{
+			SaveAdditionalParameters();
+
 		//	logout();
 			this.Close();
 		}
@@ -229,10 +231,18 @@ namespace ModLauncher
 			}
 		}
 
+		private void SaveAdditionalParameters()
+		{
+			setRegistryValue("AdditionalParameters", parametersText.Text);
+		}
+
 		private void comButton_Click(object sender, EventArgs e)
 		{
 			string choosedMod = modList.SelectedItem.ToString();
 			setRegistryValue("LNGameMod", choosedMod);
+
+			// Saving parameters into registry
+			SaveAdditionalParameters();
 
 		//	Environment.SetEnvironmentVariable("VPROJECT", gamePath + "\\" + getModDirectory());
 			Environment.SetEnvironmentVariable("VPROJECT", gamePath + "\\" + choosedMod);
@@ -241,9 +251,9 @@ namespace ModLauncher
 		//	Process.Start(pathToApp + "\\" + appExecutable, "-game " + FileSystem.Main.getModDirectory());
 			Process process = new Process();
 			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.WorkingDirectory = gamePath + "\\" + choosedMod;
-			startInfo.FileName = gamePath + "\\hl2.exe";
-			startInfo.Arguments = "-game " + choosedMod;
+			startInfo.WorkingDirectory =	String.Format( @"{0}\{1}", gamePath, choosedMod );
+			startInfo.FileName =			String.Format( @"{0}\hl2.exe", gamePath );
+			startInfo.Arguments =			String.Format( @"-game {0} {1}", choosedMod, parametersText.Text );
 			startInfo.CreateNoWindow = true;
 		//	MessageBox.Show(pathToApp + "; " + (pathToApp + "\\" + appExecutable) + "; " + ("-game " + FileSystem.Main.getModDirectory()));
 		//	Process.Start(startInfo);
@@ -257,6 +267,44 @@ namespace ModLauncher
 			Process[] processes = Process.GetProcessesByName("hl2");
 			int procCount = processes.Length;
 			removeProc(processes, procCount);
+		}
+
+		private bool isExtended = false;
+		private void MainForm_Shown(object sender, EventArgs e)
+		{
+			this.Height = 132;
+
+			string parameters = getRegistryValue(getRegistryMainPath(), "AdditionalParameters");
+			parametersText.Text = parameters;
+		}
+
+		private void additionalParamsBut_Click(object sender, EventArgs e)
+		{
+			isExtended = !isExtended;
+
+			Button button = (sender as Button);
+			if (isExtended)
+			{
+				this.Height = 182;
+				button.Image = Properties.Resources.arrowUp;
+
+				if (parametersText.CanFocus)
+				{
+					parametersText.Focus();
+					parametersText.Select(parametersText.TextLength, 1);
+				}
+			}
+			else
+			{
+				this.Height = 132;
+				button.Image = Properties.Resources.arrowDown;
+			}
+		}
+
+		private void parametersText_Leave(object sender, EventArgs e)
+		{
+		//	Console.WriteLine("unfocused");
+			SaveAdditionalParameters();
 		}
 	}
 }
