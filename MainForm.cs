@@ -82,14 +82,38 @@ namespace ModLauncher
 			string shortDir = path.Substring(path.LastIndexOf('\\') + 1);
 			foreach (string dir in ignoredirs)
 			{
-				if (dir == shortDir)
+			//	if (dir == shortDir)
+				if( shortDir.Contains(dir) )
 					return false;
 			}
 
-			if (!File.Exists(path + "\\scripts\\liblist.gam"))
+		//	if (!File.Exists(path + "\\scripts\\liblist.gam"))
+		//	{
+		//		return false;
+		//	}
+
+			string[] possibleDirs = {
+								 "cfg",
+								 "maps",
+								 "materials",
+								 "models",
+								 "resource",
+								 "SAVE",
+								 "scenes",
+								 "scripts",
+								 "sound",
+							 };
+
+			int count = 0;
+			foreach(string dir in possibleDirs)
 			{
-				return false;
+				if (Directory.Exists(path + "\\" + dir))
+				{
+					count++;
+				}
 			}
+			if (count <= 0)
+				return false;
 
 			return true;
 		}
@@ -253,7 +277,7 @@ namespace ModLauncher
 			ProcessStartInfo startInfo = new ProcessStartInfo();
 			startInfo.WorkingDirectory =	String.Format( @"{0}\{1}", gamePath, choosedMod );
 			startInfo.FileName =			String.Format( @"{0}\hl2.exe", gamePath );
-			startInfo.Arguments =			String.Format( @"-game {0} {1}", choosedMod, parametersText.Text );
+			startInfo.Arguments =			String.Format( "-game \"{0}\" {1}", choosedMod, parametersText.Text );
 			startInfo.CreateNoWindow = true;
 		//	MessageBox.Show(pathToApp + "; " + (pathToApp + "\\" + appExecutable) + "; " + ("-game " + FileSystem.Main.getModDirectory()));
 		//	Process.Start(startInfo);

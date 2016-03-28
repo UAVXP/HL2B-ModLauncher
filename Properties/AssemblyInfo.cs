@@ -12,7 +12,7 @@ using System.Resources;
 [assembly: AssemblyCompany("VXP")]
 [assembly: AssemblyProduct("ModLauncher")]
 [assembly: AssemblyCopyright("Copyright © VXP 2016")]
-[assembly: AssemblyTrademark("2015 Valve Corporation. All rights reserved. Valve, the Valve logo, Half-Life, the Half-Life logo are trademarks and/or registered trademarks of Valve Corporation. All other trademarks are property of their respective owners.")]
+[assembly: AssemblyTrademark("2016 Valve Corporation. All rights reserved. Valve, the Valve logo, Half-Life, the Half-Life logo are trademarks and/or registered trademarks of Valve Corporation. All other trademarks are property of their respective owners.")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
