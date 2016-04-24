@@ -70,7 +70,7 @@
 			this.move.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.move.BackColor = System.Drawing.Color.Transparent;
-			this.move.BackgroundImage = global::ModLauncher.Properties.Resources.background0031;
+			this.move.BackgroundImage = global::ModLauncher.Properties.Resources.background003;
 			this.move.Controls.Add(this.pictureBox1);
 			this.move.Controls.Add(this.minimize);
 			this.move.Controls.Add(this.close);
