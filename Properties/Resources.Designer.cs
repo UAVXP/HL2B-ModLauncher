@@ -93,9 +93,9 @@ namespace ModLauncher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap background003 {
+        public static System.Drawing.Bitmap background0031 {
             get {
-                object obj = ResourceManager.GetObject("background003", resourceCulture);
+                object obj = ResourceManager.GetObject("background0031", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
