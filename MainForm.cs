@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define TRANSLATION 1
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -211,6 +213,31 @@ namespace ModLauncher
 			}
 		}
 
+#if TRANSLATION
+		private void TranslateModDirectory(ref string dir)
+		{
+			dir = dir.ToLower();
+			switch (dir)
+			{
+			case "cstrike":
+				dir = "Counter-Strike Source";
+				break;
+			case "hl2":
+				dir = "Half-Life 2";
+				break;
+			case "tf2":
+			case "tfc":
+				dir = "Team Fortress 2";
+				break;
+			case "hl1":
+				dir = "Half-Life Source";
+				break;
+			default:
+				break;
+			}
+		}
+#endif
+
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			modList.Items.Clear();
@@ -229,7 +256,8 @@ namespace ModLauncher
 			string choosedGameMod = getModDirectory();
 			int k = 0;
 			bool isModFound = false;
-			foreach (string val in modList.Items)
+			ComboBox.ObjectCollection listItems = modList.Items;
+			foreach (string val in listItems)
 			{
 			//	Console.WriteLine(val + " - " + choosedGameMod);
 				if (val == choosedGameMod)
@@ -243,7 +271,7 @@ namespace ModLauncher
 			if (!isModFound)
 			{
 				k = 0;
-				foreach (string val in modList.Items)
+				foreach (string val in listItems)
 				{
 					if (val.IndexOf(choosedGameMod) >= 0)
 					{
@@ -253,14 +281,64 @@ namespace ModLauncher
 					k++;
 				}
 			}
+
+#if TRANSLATION
+			// Translating
+			for (int i = 0; i < modList.Items.Count; i++)
+			{
+				string oldValue = (string)modList.Items[i];
+				TranslateModDirectory(ref oldValue);
+				modList.Items[i] = oldValue;
+			}
+#endif
 		}
 
 		private void SaveAdditionalParameters()
 		{
-			setRegistryValue("AdditionalParameters", parametersText.Text);
+			setRegistryValue("GameParameters", gameParametersText.Text);
+			setRegistryValue("ServerParameters", srvParametersText.Text);
 		}
 
-		private void comButton_Click(object sender, EventArgs e)
+		private bool isExtended = false;
+		private void MainForm_Shown(object sender, EventArgs e)
+		{
+			this.Height = 140;
+
+			gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
+			srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
+		}
+
+		private void additionalParamsBut_Click(object sender, EventArgs e)
+		{
+			isExtended = !isExtended;
+
+			Button button = (sender as Button);
+			if (isExtended)
+			{
+				this.Height = 182;
+				button.Image = Properties.Resources.arrowUp;
+
+				// VXP: Do we need this anymore?
+				if (gameParametersText.CanFocus)
+				{
+					gameParametersText.Focus();
+					gameParametersText.Select(gameParametersText.TextLength, 1);
+				}
+			}
+			else
+			{
+				this.Height = 140;
+				button.Image = Properties.Resources.arrowDown;
+			}
+		}
+
+		private void parametersText_Leave(object sender, EventArgs e)
+		{
+		//	Console.WriteLine("unfocused");
+			SaveAdditionalParameters();
+		}
+
+		private void startProcess(string name)
 		{
 			string choosedMod = modList.SelectedItem.ToString();
 			setRegistryValue("LNGameMod", choosedMod);
@@ -275,9 +353,9 @@ namespace ModLauncher
 		//	Process.Start(pathToApp + "\\" + appExecutable, "-game " + FileSystem.Main.getModDirectory());
 			Process process = new Process();
 			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.WorkingDirectory =	String.Format( @"{0}\{1}", gamePath, choosedMod );
-			startInfo.FileName =			String.Format( @"{0}\hl2.exe", gamePath );
-			startInfo.Arguments =			String.Format( "-game \"{0}\" {1}", choosedMod, parametersText.Text );
+			startInfo.WorkingDirectory = String.Format(@"{0}\{1}", gamePath, choosedMod);
+			startInfo.FileName = String.Format(@"{0}\{1}", gamePath, name);
+			startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, ((name.Contains("hlds.exe")) ? srvParametersText.Text : gameParametersText.Text));
 			startInfo.CreateNoWindow = true;
 		//	MessageBox.Show(pathToApp + "; " + (pathToApp + "\\" + appExecutable) + "; " + ("-game " + FileSystem.Main.getModDirectory()));
 		//	Process.Start(startInfo);
@@ -286,49 +364,31 @@ namespace ModLauncher
 		//	Directory.SetCurrentDirectory(oldCurDir);
 		}
 
-		private void closeBut_Click(object sender, EventArgs e)
+		private void closeProcess(string name)
 		{
-			Process[] processes = Process.GetProcessesByName("hl2");
+			Process[] processes = Process.GetProcessesByName(name);
 			int procCount = processes.Length;
 			removeProc(processes, procCount);
 		}
 
-		private bool isExtended = false;
-		private void MainForm_Shown(object sender, EventArgs e)
+		private void gameStartButton_Click(object sender, EventArgs e)
 		{
-			this.Height = 132;
-
-			string parameters = getRegistryValue(getRegistryMainPath(), "AdditionalParameters");
-			parametersText.Text = parameters;
+			startProcess( "hl2.exe" );
 		}
 
-		private void additionalParamsBut_Click(object sender, EventArgs e)
+		private void gameStopButton_Click(object sender, EventArgs e)
 		{
-			isExtended = !isExtended;
-
-			Button button = (sender as Button);
-			if (isExtended)
-			{
-				this.Height = 182;
-				button.Image = Properties.Resources.arrowUp;
-
-				if (parametersText.CanFocus)
-				{
-					parametersText.Focus();
-					parametersText.Select(parametersText.TextLength, 1);
-				}
-			}
-			else
-			{
-				this.Height = 132;
-				button.Image = Properties.Resources.arrowDown;
-			}
+			closeProcess( "hl2" );
 		}
 
-		private void parametersText_Leave(object sender, EventArgs e)
+		private void srvStartButton_Click(object sender, EventArgs e)
 		{
-		//	Console.WriteLine("unfocused");
-			SaveAdditionalParameters();
+			startProcess( @"bin\hlds.exe" );
+		}
+
+		private void srvStopButton_Click(object sender, EventArgs e)
+		{
+			closeProcess( "hlds" );
 		}
 	}
 }

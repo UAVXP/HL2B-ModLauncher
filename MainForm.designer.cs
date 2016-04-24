@@ -36,14 +36,21 @@
 			this.close = new System.Windows.Forms.PictureBox();
 			this.modList = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.comButton = new System.Windows.Forms.Button();
-			this.closeBut = new System.Windows.Forms.Button();
 			this.additionalParamsBut = new System.Windows.Forms.Button();
-			this.parametersText = new System.Windows.Forms.TextBox();
+			this.gameParametersText = new System.Windows.Forms.TextBox();
+			this.srvStartButton = new System.Windows.Forms.Button();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.srvStopButton = new System.Windows.Forms.Button();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.gameStopButton = new System.Windows.Forms.Button();
+			this.gameStartButton = new System.Windows.Forms.Button();
+			this.srvParametersText = new System.Windows.Forms.TextBox();
 			this.move.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.minimize)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.close)).BeginInit();
+			this.groupBox1.SuspendLayout();
+			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// title
@@ -70,7 +77,7 @@
 			this.move.Controls.Add(this.title);
 			this.move.Location = new System.Drawing.Point(0, 0);
 			this.move.Name = "move";
-			this.move.Size = new System.Drawing.Size(302, 21);
+			this.move.Size = new System.Drawing.Size(650, 21);
 			this.move.TabIndex = 12;
 			this.move.MouseDown += new System.Windows.Forms.MouseEventHandler(this.move_MouseDown);
 			// 
@@ -90,7 +97,7 @@
 			this.minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.minimize.BackColor = System.Drawing.Color.Transparent;
 			this.minimize.BackgroundImage = global::ModLauncher.Properties.Resources.minimize001;
-			this.minimize.Location = new System.Drawing.Point(275, 6);
+			this.minimize.Location = new System.Drawing.Point(623, 6);
 			this.minimize.Name = "minimize";
 			this.minimize.Size = new System.Drawing.Size(7, 9);
 			this.minimize.TabIndex = 13;
@@ -102,7 +109,7 @@
 			this.close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.close.BackColor = System.Drawing.Color.Transparent;
 			this.close.BackgroundImage = global::ModLauncher.Properties.Resources.close001;
-			this.close.Location = new System.Drawing.Point(288, 6);
+			this.close.Location = new System.Drawing.Point(636, 6);
 			this.close.Name = "close";
 			this.close.Size = new System.Drawing.Size(9, 9);
 			this.close.TabIndex = 9;
@@ -133,32 +140,6 @@
 			this.label2.TabIndex = 14;
 			this.label2.Text = "Choose modification:";
 			// 
-			// comButton
-			// 
-			this.comButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
-			this.comButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.comButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.comButton.Location = new System.Drawing.Point(25, 60);
-			this.comButton.Name = "comButton";
-			this.comButton.Size = new System.Drawing.Size(173, 32);
-			this.comButton.TabIndex = 19;
-			this.comButton.Text = "Run modification";
-			this.comButton.UseVisualStyleBackColor = false;
-			this.comButton.Click += new System.EventHandler(this.comButton_Click);
-			// 
-			// closeBut
-			// 
-			this.closeBut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
-			this.closeBut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.closeBut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.closeBut.Location = new System.Drawing.Point(204, 60);
-			this.closeBut.Name = "closeBut";
-			this.closeBut.Size = new System.Drawing.Size(72, 32);
-			this.closeBut.TabIndex = 20;
-			this.closeBut.Text = "Close game";
-			this.closeBut.UseVisualStyleBackColor = false;
-			this.closeBut.Click += new System.EventHandler(this.closeBut_Click);
-			// 
 			// additionalParamsBut
 			// 
 			this.additionalParamsBut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
@@ -166,7 +147,7 @@
 			this.additionalParamsBut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.additionalParamsBut.Image = global::ModLauncher.Properties.Resources.arrowDown;
 			this.additionalParamsBut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.additionalParamsBut.Location = new System.Drawing.Point(143, 98);
+			this.additionalParamsBut.Location = new System.Drawing.Point(143, 107);
 			this.additionalParamsBut.Name = "additionalParamsBut";
 			this.additionalParamsBut.Size = new System.Drawing.Size(133, 23);
 			this.additionalParamsBut.TabIndex = 21;
@@ -175,27 +156,116 @@
 			this.additionalParamsBut.UseVisualStyleBackColor = false;
 			this.additionalParamsBut.Click += new System.EventHandler(this.additionalParamsBut_Click);
 			// 
-			// parametersText
+			// gameParametersText
 			// 
-			this.parametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-			this.parametersText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.parametersText.ForeColor = System.Drawing.Color.Silver;
-			this.parametersText.Location = new System.Drawing.Point(25, 144);
-			this.parametersText.Name = "parametersText";
-			this.parametersText.Size = new System.Drawing.Size(251, 20);
-			this.parametersText.TabIndex = 22;
-			this.parametersText.Leave += new System.EventHandler(this.parametersText_Leave);
+			this.gameParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.gameParametersText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.gameParametersText.ForeColor = System.Drawing.Color.Silver;
+			this.gameParametersText.Location = new System.Drawing.Point(282, 144);
+			this.gameParametersText.Name = "gameParametersText";
+			this.gameParametersText.Size = new System.Drawing.Size(171, 20);
+			this.gameParametersText.TabIndex = 22;
+			this.gameParametersText.Leave += new System.EventHandler(this.parametersText_Leave);
+			// 
+			// srvStartButton
+			// 
+			this.srvStartButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
+			this.srvStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.srvStartButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.srvStartButton.Location = new System.Drawing.Point(21, 19);
+			this.srvStartButton.Name = "srvStartButton";
+			this.srvStartButton.Size = new System.Drawing.Size(133, 32);
+			this.srvStartButton.TabIndex = 23;
+			this.srvStartButton.Text = "Start";
+			this.srvStartButton.UseVisualStyleBackColor = false;
+			this.srvStartButton.Click += new System.EventHandler(this.srvStartButton_Click);
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+			this.groupBox1.Controls.Add(this.srvStopButton);
+			this.groupBox1.Controls.Add(this.srvStartButton);
+			this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.groupBox1.Location = new System.Drawing.Point(459, 27);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(171, 103);
+			this.groupBox1.TabIndex = 24;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Dedicated server (hlds.exe)";
+			// 
+			// srvStopButton
+			// 
+			this.srvStopButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
+			this.srvStopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.srvStopButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.srvStopButton.Location = new System.Drawing.Point(21, 57);
+			this.srvStopButton.Name = "srvStopButton";
+			this.srvStopButton.Size = new System.Drawing.Size(133, 32);
+			this.srvStopButton.TabIndex = 24;
+			this.srvStopButton.Text = "Stop";
+			this.srvStopButton.UseVisualStyleBackColor = false;
+			this.srvStopButton.Click += new System.EventHandler(this.srvStopButton_Click);
+			// 
+			// groupBox2
+			// 
+			this.groupBox2.BackColor = System.Drawing.Color.Transparent;
+			this.groupBox2.Controls.Add(this.gameStopButton);
+			this.groupBox2.Controls.Add(this.gameStartButton);
+			this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.groupBox2.Location = new System.Drawing.Point(282, 27);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(171, 103);
+			this.groupBox2.TabIndex = 25;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Game (hl2.exe)";
+			// 
+			// gameStopButton
+			// 
+			this.gameStopButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
+			this.gameStopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.gameStopButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.gameStopButton.Location = new System.Drawing.Point(21, 57);
+			this.gameStopButton.Name = "gameStopButton";
+			this.gameStopButton.Size = new System.Drawing.Size(133, 32);
+			this.gameStopButton.TabIndex = 24;
+			this.gameStopButton.Text = "Stop";
+			this.gameStopButton.UseVisualStyleBackColor = false;
+			this.gameStopButton.Click += new System.EventHandler(this.gameStopButton_Click);
+			// 
+			// gameStartButton
+			// 
+			this.gameStartButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
+			this.gameStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.gameStartButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.gameStartButton.Location = new System.Drawing.Point(21, 19);
+			this.gameStartButton.Name = "gameStartButton";
+			this.gameStartButton.Size = new System.Drawing.Size(133, 32);
+			this.gameStartButton.TabIndex = 23;
+			this.gameStartButton.Text = "Start";
+			this.gameStartButton.UseVisualStyleBackColor = false;
+			this.gameStartButton.Click += new System.EventHandler(this.gameStartButton_Click);
+			// 
+			// srvParametersText
+			// 
+			this.srvParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.srvParametersText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.srvParametersText.ForeColor = System.Drawing.Color.Silver;
+			this.srvParametersText.Location = new System.Drawing.Point(459, 144);
+			this.srvParametersText.Name = "srvParametersText";
+			this.srvParametersText.Size = new System.Drawing.Size(171, 20);
+			this.srvParametersText.TabIndex = 26;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::ModLauncher.Properties.Resources.background002;
-			this.ClientSize = new System.Drawing.Size(302, 182);
-			this.Controls.Add(this.parametersText);
+			this.ClientSize = new System.Drawing.Size(650, 182);
+			this.Controls.Add(this.srvParametersText);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.gameParametersText);
 			this.Controls.Add(this.additionalParamsBut);
-			this.Controls.Add(this.closeBut);
-			this.Controls.Add(this.comButton);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.modList);
 			this.Controls.Add(this.move);
@@ -211,6 +281,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.minimize)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.close)).EndInit();
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox2.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -224,10 +296,15 @@
 		private System.Windows.Forms.PictureBox close;
 		private System.Windows.Forms.ComboBox modList;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Button comButton;
 		private System.Windows.Forms.PictureBox pictureBox1;
-		private System.Windows.Forms.Button closeBut;
 		private System.Windows.Forms.Button additionalParamsBut;
-		private System.Windows.Forms.TextBox parametersText;
+		private System.Windows.Forms.TextBox gameParametersText;
+		private System.Windows.Forms.Button srvStartButton;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.Button srvStopButton;
+		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.Button gameStopButton;
+		private System.Windows.Forms.Button gameStartButton;
+		private System.Windows.Forms.TextBox srvParametersText;
 	}
 }
