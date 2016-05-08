@@ -376,6 +376,14 @@ namespace ModLauncher
 			startProcess( "hl2.exe" );
 		}
 
+		private void gameParametersText_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				startProcess("hl2.exe");
+			}
+		}
+
 		private void gameStopButton_Click(object sender, EventArgs e)
 		{
 			closeProcess( "hl2" );
@@ -384,6 +392,14 @@ namespace ModLauncher
 		private void srvStartButton_Click(object sender, EventArgs e)
 		{
 			startProcess( @"bin\hlds.exe" );
+		}
+
+		private void srvParametersText_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				startProcess(@"bin\hlds.exe");
+			}
 		}
 
 		private void srvStopButton_Click(object sender, EventArgs e)

@@ -165,6 +165,7 @@
 			this.gameParametersText.Name = "gameParametersText";
 			this.gameParametersText.Size = new System.Drawing.Size(171, 20);
 			this.gameParametersText.TabIndex = 22;
+			this.gameParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gameParametersText_KeyDown);
 			this.gameParametersText.Leave += new System.EventHandler(this.parametersText_Leave);
 			// 
 			// srvStartButton
@@ -254,6 +255,7 @@
 			this.srvParametersText.Name = "srvParametersText";
 			this.srvParametersText.Size = new System.Drawing.Size(171, 20);
 			this.srvParametersText.TabIndex = 26;
+			this.srvParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.srvParametersText_KeyDown);
 			// 
 			// MainForm
 			// 
