@@ -40,6 +40,8 @@ namespace ModLauncher
 			}
 		}
 
+		
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -48,8 +50,6 @@ namespace ModLauncher
 		private void close_Click(object sender, EventArgs e)
 		{
 			SaveAdditionalParameters();
-
-		//	logout();
 			this.Close();
 		}
 
@@ -84,8 +84,8 @@ namespace ModLauncher
 			string shortDir = path.Substring(path.LastIndexOf('\\') + 1);
 			foreach (string dir in ignoredirs)
 			{
-			//	if (dir == shortDir)
-				if( shortDir.Contains(dir) )
+				if (dir == shortDir)
+			//	if( shortDir.Contains(dir) )
 					return false;
 			}
 
@@ -114,10 +114,8 @@ namespace ModLauncher
 					count++;
 				}
 			}
-			if (count <= 0)
-				return false;
 
-			return true;
+			return (count > 0);
 		}
 		public static string getRegistryMainPath()
 		{
@@ -184,8 +182,6 @@ namespace ModLauncher
 			return true;
 		}
 
-	//	public static string gamePath = Directory.GetCurrentDirectory();
-		
 #if DEBUG
 		public static string gamePath = @"D:\AHL2_R";
 #else
@@ -200,17 +196,6 @@ namespace ModLauncher
 				return "";
 
 			return regValue;
-		}
-
-		private static void removeProc(Process[] proc, int count)
-		{
-			if (count > 0)
-			{
-				for (int i = 0; i < count; i++)
-				{
-					proc[i].Kill();
-				}
-			}
 		}
 
 #if TRANSLATION
@@ -237,12 +222,11 @@ namespace ModLauncher
 			}
 		}
 #endif
-
-		private void MainForm_Load(object sender, EventArgs e)
+		public void RefreshModList()
 		{
 			modList.Items.Clear();
 			List<string> listOfMods = new List<string>();
-		//	foreach (string dir in Directory.GetDirectories(Directory.GetCurrentDirectory()))
+
 			foreach (string dir in Directory.GetDirectories(gamePath))
 			{
 				if (isModDirectory(dir))
@@ -293,9 +277,14 @@ namespace ModLauncher
 #endif
 		}
 
+		private void MainForm_Load(object sender, EventArgs e)
+		{
+			RefreshModList();
+		}
+
 		private void SaveAdditionalParameters()
 		{
-			setRegistryValue("GameParameters", gameParametersText.Text);
+			setRegistryValue("GameParameters", gameParametersText.Text); // TODO: Do a separate parameters for every mod
 			setRegistryValue("ServerParameters", srvParametersText.Text);
 		}
 
@@ -341,10 +330,6 @@ namespace ModLauncher
 		private void startProcess(string name)
 		{
 			string choosedMod = modList.SelectedItem.ToString();
-			setRegistryValue("LNGameMod", choosedMod);
-
-			// Saving parameters into registry
-			SaveAdditionalParameters();
 
 		//	Environment.SetEnvironmentVariable("VPROJECT", gamePath + "\\" + getModDirectory());
 			Environment.SetEnvironmentVariable("VPROJECT", gamePath + "\\" + choosedMod);
@@ -368,7 +353,18 @@ namespace ModLauncher
 		{
 			Process[] processes = Process.GetProcessesByName(name);
 			int procCount = processes.Length;
-			removeProc(processes, procCount);
+			if (procCount > 0)
+			{
+				for (int i = 0; i < procCount; i++)
+				{
+					// Close only process that exists aside program
+					bool bSamePath = Path.GetDirectoryName(processes[0].Modules[0].FileName).Equals(gamePath);
+					if (bSamePath)
+					{
+						processes[i].Kill();
+					}
+				}
+			}
 		}
 
 		private void gameStartButton_Click(object sender, EventArgs e)
@@ -405,6 +401,20 @@ namespace ModLauncher
 		private void srvStopButton_Click(object sender, EventArgs e)
 		{
 			closeProcess( "hlds" );
+		}
+
+		private void btnRefresh_Click(object sender, EventArgs e)
+		{
+			RefreshModList();
+		}
+
+		private void modList_TextChanged(object sender, EventArgs e)
+		{
+			string choosedMod = (sender as ComboBox).SelectedItem.ToString();
+			setRegistryValue("LNGameMod", choosedMod);
+
+			// Saving parameters into registry
+			SaveAdditionalParameters();
 		}
 	}
 }

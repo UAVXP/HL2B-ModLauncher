@@ -45,6 +45,7 @@
 			this.gameStopButton = new System.Windows.Forms.Button();
 			this.gameStartButton = new System.Windows.Forms.Button();
 			this.srvParametersText = new System.Windows.Forms.TextBox();
+			this.btnRefresh = new System.Windows.Forms.Button();
 			this.move.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.minimize)).BeginInit();
@@ -85,7 +86,7 @@
 			// 
 			this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
 			this.pictureBox1.Image = global::ModLauncher.Properties.Resources.game;
-			this.pictureBox1.Location = new System.Drawing.Point(5, 4);
+			this.pictureBox1.Location = new System.Drawing.Point(5, 3);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(16, 16);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -127,6 +128,7 @@
 			this.modList.Name = "modList";
 			this.modList.Size = new System.Drawing.Size(139, 21);
 			this.modList.TabIndex = 13;
+			this.modList.TextChanged += new System.EventHandler(this.modList_TextChanged);
 			// 
 			// label2
 			// 
@@ -147,9 +149,9 @@
 			this.additionalParamsBut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.additionalParamsBut.Image = global::ModLauncher.Properties.Resources.arrowDown;
 			this.additionalParamsBut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.additionalParamsBut.Location = new System.Drawing.Point(143, 107);
+			this.additionalParamsBut.Location = new System.Drawing.Point(137, 107);
 			this.additionalParamsBut.Name = "additionalParamsBut";
-			this.additionalParamsBut.Size = new System.Drawing.Size(133, 23);
+			this.additionalParamsBut.Size = new System.Drawing.Size(139, 23);
 			this.additionalParamsBut.TabIndex = 21;
 			this.additionalParamsBut.Text = "Additional parameters";
 			this.additionalParamsBut.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -257,12 +259,26 @@
 			this.srvParametersText.TabIndex = 26;
 			this.srvParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.srvParametersText_KeyDown);
 			// 
+			// btnRefresh
+			// 
+			this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
+			this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnRefresh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.btnRefresh.Location = new System.Drawing.Point(137, 60);
+			this.btnRefresh.Name = "btnRefresh";
+			this.btnRefresh.Size = new System.Drawing.Size(139, 23);
+			this.btnRefresh.TabIndex = 25;
+			this.btnRefresh.Text = "Refresh";
+			this.btnRefresh.UseVisualStyleBackColor = false;
+			this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::ModLauncher.Properties.Resources.background002;
 			this.ClientSize = new System.Drawing.Size(650, 182);
+			this.Controls.Add(this.btnRefresh);
 			this.Controls.Add(this.srvParametersText);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
@@ -308,5 +324,6 @@
 		private System.Windows.Forms.Button gameStopButton;
 		private System.Windows.Forms.Button gameStartButton;
 		private System.Windows.Forms.TextBox srvParametersText;
+		private System.Windows.Forms.Button btnRefresh;
 	}
 }
