@@ -40,6 +40,7 @@ namespace ModLauncher
 
 		List<Mod> mods = new List<Mod>();
 		bool bFullyLoaded = false;
+		Settings settings = new Settings();
 
 		public MainForm()
 		{
@@ -68,18 +69,19 @@ namespace ModLauncher
 
 		public static bool isModDirectory(string path)
 		{
-			string[] ignoredirs = {
-								 "3dsmax2.5",
-								 "3dsmax3",
-								 "bin",
-								 "logos",
-								 "media",
-								 "pak",
-								 "Photoshop 5.5",
-								 "platform",
-								 "src_main",
-								 "XSI",
-							 };
+			string[] ignoredirs =
+			{
+				"3dsmax2.5",
+				"3dsmax3",
+				"bin",
+				"logos",
+				"media",
+				"pak",
+				"Photoshop 5.5",
+				"platform",
+				"src_main",
+				"XSI",
+			};
 			string shortDir = path.Substring(path.LastIndexOf('\\') + 1);
 			foreach (string dir in ignoredirs)
 			{
@@ -93,17 +95,24 @@ namespace ModLauncher
 		//		return false;
 		//	}
 
-			string[] possibleDirs = {
-								 "cfg",
-								 "maps",
-								 "materials",
-								 "models",
-								 "resource",
-								 "SAVE",
-								 "scenes",
-								 "scripts",
-								 "sound",
-							 };
+			string[] possibleDirs =
+			{
+				"bin",
+				"cfg",
+				"maps",
+				"mapsrc",
+				"materials",
+				"materialsrc",
+				"models",
+				"modelsrc",
+				"resource",
+				"SAVE",
+				"scenes",
+				"screenshots",
+				"scripts",
+				"sound",
+				"testscripts",
+			};
 
 			int count = 0;
 			foreach(string dir in possibleDirs)
@@ -244,10 +253,23 @@ namespace ModLauncher
 
 					Console.WriteLine("Game: " + gamename);
 
-					Mod mod =	new Mod {
-											Dir = ddir,
-											Name = ((gamename != "") ? gamename : ddir)
-										};
+					Mod mod = new Mod
+					{
+						Dir = ddir,
+						Name = ((gamename != "") ? gamename : ddir)
+					};
+
+					List<Mod> test = settings.GetMods();
+					foreach (Mod storedMod in test)
+					{
+						if (storedMod.Dir == ddir) // Restoring parameters for mod
+						{
+							mod.Parameters = storedMod.Parameters;
+							mod.ServerParameters = storedMod.ServerParameters;
+						}
+					}
+
+					Console.WriteLine(string.Format("{0}, {1}, {2}", mod.Dir, mod.Name, mod.Parameters));
 					mods.Add(mod);
 				}
 			}
@@ -293,8 +315,19 @@ namespace ModLauncher
 
 		private void SaveAdditionalParameters()
 		{
-			setRegistryValue("GameParameters", gameParametersText.Text); // TODO: Do a separate parameters for every mod
-			setRegistryValue("ServerParameters", srvParametersText.Text);
+		//	setRegistryValue("GameParameters", gameParametersText.Text); // TODO: Do a separate parameters for every mod
+		//	setRegistryValue("ServerParameters", srvParametersText.Text);
+
+		//	mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
+		//	mods[modList.SelectedIndex].ServerParameters = srvParametersText.Text;
+
+			// Write to file
+			bool successfulSave = settings.WriteSettings(mods);
+			if (!successfulSave)
+				MessageBox.Show("Mod parameters cannot be saved!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+		//	gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
+		//	srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
 		}
 
 	//	private bool isExtended = false;
@@ -302,8 +335,11 @@ namespace ModLauncher
 		{
 		//	this.Height = 140;
 
-			gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
-			srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
+		//	gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
+		//	srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
+
+			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
+			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
 		}
 
 		/*
@@ -334,12 +370,14 @@ namespace ModLauncher
 
 		private void parametersText_Leave(object sender, EventArgs e)
 		{
+		//	mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
 			// Saving parameters into registry
 			SaveAdditionalParameters();
 		}
 
 		private void srvParametersText_Leave(object sender, EventArgs e)
 		{
+		//	mods[modList.SelectedIndex].ServerParameters = srvParametersText.Text;
 			// Saving parameters into registry
 			SaveAdditionalParameters();
 		}
@@ -464,7 +502,7 @@ namespace ModLauncher
 			RefreshModList();
 		}
 
-		private void modList_TextChanged(object sender, EventArgs e)
+		private void modList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!bFullyLoaded)
 				return;
@@ -474,7 +512,20 @@ namespace ModLauncher
 			setRegistryValue("LNGameMod", choosedMod);
 
 			// Saving parameters into registry
-			SaveAdditionalParameters();
+		//	SaveAdditionalParameters();
+
+			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
+			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+		}
+
+		private void gameParametersText_TextChanged(object sender, EventArgs e)
+		{
+			mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
+		}
+
+		private void srvParametersText_TextChanged(object sender, EventArgs e)
+		{
+			mods[modList.SelectedIndex].ServerParameters = srvParametersText.Text;
 		}
 	}
 }

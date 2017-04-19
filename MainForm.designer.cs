@@ -132,7 +132,7 @@
 			this.modList.Size = new System.Drawing.Size(189, 21);
 			this.modList.TabIndex = 13;
 			this.ttChooseModification.SetToolTip(this.modList, "Here you can choose modification that you want to run");
-			this.modList.TextChanged += new System.EventHandler(this.modList_TextChanged);
+			this.modList.SelectedIndexChanged += new System.EventHandler(this.modList_SelectedIndexChanged);
 			// 
 			// label2
 			// 
@@ -156,6 +156,7 @@
 			this.gameParametersText.Size = new System.Drawing.Size(272, 20);
 			this.gameParametersText.TabIndex = 22;
 			this.ttAdditionalParams.SetToolTip(this.gameParametersText, "Additional parameters for game");
+			this.gameParametersText.TextChanged += new System.EventHandler(this.gameParametersText_TextChanged);
 			this.gameParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gameParametersText_KeyDown);
 			this.gameParametersText.Leave += new System.EventHandler(this.parametersText_Leave);
 			// 
@@ -210,6 +211,7 @@
 			this.srvParametersText.Size = new System.Drawing.Size(272, 20);
 			this.srvParametersText.TabIndex = 26;
 			this.ttAdditionalParams.SetToolTip(this.srvParametersText, "Additional parameters for server");
+			this.srvParametersText.TextChanged += new System.EventHandler(this.srvParametersText_TextChanged);
 			this.srvParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.srvParametersText_KeyDown);
 			this.srvParametersText.Leave += new System.EventHandler(this.srvParametersText_Leave);
 			// 
