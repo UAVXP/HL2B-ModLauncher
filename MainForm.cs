@@ -38,9 +38,15 @@ namespace ModLauncher
 			}
 		}
 
+#if DEBUG
+		public static string gamePath = @"D:\AHL2_R";
+#else
+		public static string gamePath = Directory.GetCurrentDirectory();
+#endif
+
 		List<Mod> mods = new List<Mod>();
 		bool bFullyLoaded = false;
-		Settings settings = new Settings();
+		Settings settings = new Settings(gamePath);
 
 		public MainForm()
 		{
@@ -190,12 +196,6 @@ namespace ModLauncher
 			}
 			return true;
 		}
-
-#if DEBUG
-		public static string gamePath = @"D:\AHL2_R";
-#else
-		public static string gamePath = Directory.GetCurrentDirectory();
-#endif
 
 		public static string getModDirectory()
 		{

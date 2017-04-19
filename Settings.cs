@@ -10,8 +10,10 @@ namespace ModLauncher
 
 	class Settings
 	{
-		public Settings()
+		private string GamePath;
+		public Settings(string gamePath)
 		{
+			this.GamePath = gamePath;
 			// Writing
 			/*
 			List<Mod> mods = new List<Mod>();
@@ -41,7 +43,7 @@ namespace ModLauncher
 		{
 			try
 			{
-				FileStream fstream = new FileStream("ModLauncher.dat", FileMode.OpenOrCreate);
+				FileStream fstream = new FileStream(this.GamePath + "\\ModLauncher.dat", FileMode.OpenOrCreate);
 				if (fstream == null || fstream.Length <= 0)
 				{
 					fstream.Close();
@@ -70,7 +72,7 @@ namespace ModLauncher
 			try
 			{
 			//	FileStream fstream = new FileStream("ModLauncher.dat", FileMode.OpenOrCreate);
-				FileStream fstream = new FileStream("ModLauncher.dat", FileMode.Create);
+				FileStream fstream = new FileStream(this.GamePath + "\\ModLauncher.dat", FileMode.Create);
 				if (fstream == null)
 				{
 					fstream.Close();
