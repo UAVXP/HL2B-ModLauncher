@@ -381,6 +381,12 @@ namespace ModLauncher
 			process.StartInfo = startInfo;
 			process.Start();
 		//	Directory.SetCurrentDirectory(oldCurDir);
+
+			// Cleaning up
+			startInfo = null;
+			process.Dispose();
+			process = null;
+			GC.Collect();
 		}
 
 		private void closeProcess(string name)
@@ -390,18 +396,31 @@ namespace ModLauncher
 			int procCount = processes.Length;
 			if (procCount > 0)
 			{
-				for (int i = 0; i < procCount; i++)
+				try
 				{
-					Console.WriteLine("\t" + Path.GetDirectoryName(processes[i].Modules[0].FileName));
-					// Close only process that exists aside program
-					bool isHLDS = name.Contains("hlds");
-					bool bSamePath = Path.GetDirectoryName(processes[i].Modules[0].FileName).Equals(isHLDS ? gamePath + "\\bin" : gamePath);
-					if (bSamePath)
+					for (int i = 0; i < procCount; i++)
 					{
-						processes[i].Kill();
+						//	Console.WriteLine("\t" + Path.GetDirectoryName(processes[i].Modules[0].FileName));
+						// Close only process that exists aside program
+						bool isHLDS = name.Contains("hlds");
+						bool bSamePath = Path.GetDirectoryName(processes[i].Modules[0].FileName).Equals(isHLDS ? gamePath + "\\bin" : gamePath);
+						if (bSamePath)
+						{
+							processes[i].Kill();
+							processes[i].Close();
+							processes[i].Dispose();
+						}
 					}
 				}
+				catch(Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+				}
 			}
+
+			// Cleaning up
+			processes = null;
+			GC.Collect();
 		}
 
 		private void gameStartButton_Click(object sender, EventArgs e)
