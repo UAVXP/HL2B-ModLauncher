@@ -1,6 +1,4 @@
-﻿//#define TRANSLATION 1
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -40,7 +38,7 @@ namespace ModLauncher
 			}
 		}
 
-		
+		List<Mod> mods = new List<Mod>();
 
 		public MainForm()
 		{
@@ -198,8 +196,7 @@ namespace ModLauncher
 			return regValue;
 		}
 
-#if TRANSLATION
-		private void TranslateModDirectory(ref string dir)
+		private string TranslateModDirectory(string dir)
 		{
 			dir = dir.ToLower();
 			switch (dir)
@@ -220,31 +217,50 @@ namespace ModLauncher
 			default:
 				break;
 			}
+
+			return dir;
 		}
-#endif
+
 		public void RefreshModList()
 		{
 			modList.Items.Clear();
-			List<string> listOfMods = new List<string>();
+			mods.Clear();
 
 			foreach (string dir in Directory.GetDirectories(gamePath))
 			{
 				if (isModDirectory(dir))
 				{
-					listOfMods.Add(dir.Substring(dir.LastIndexOf('\\') + 1));
+					string ddir = dir.Substring(dir.LastIndexOf('\\') + 1);
+
+					LibList liblist = new LibList(gamePath, ddir);
+					string gamename = liblist.GetGameName();
+
+					if (gamename == "") // There's still no information about this mod at liblist.gam
+					{
+						gamename = TranslateModDirectory(ddir); // Trying to translate mod directory with known names
+					}
+
+					Console.WriteLine("Game: " + gamename);
+
+					Mod mod =	new Mod {
+											Dir = ddir,
+											Name = ((gamename != "") ? gamename : ddir)
+										};
+					mods.Add(mod);
 				}
 			}
-			modList.Items.AddRange(listOfMods.ToArray());
+			foreach (Mod mod in mods)
+			{
+				modList.Items.Add(mod.Name);
+			}
 
 			// Choosing saved mod
 			string choosedGameMod = getModDirectory();
 			int k = 0;
 			bool isModFound = false;
-			ComboBox.ObjectCollection listItems = modList.Items;
-			foreach (string val in listItems)
+			foreach (Mod val in mods)
 			{
-			//	Console.WriteLine(val + " - " + choosedGameMod);
-				if (val == choosedGameMod)
+				if (val.Dir == choosedGameMod)
 				{
 					modList.SelectedIndex = k;
 					isModFound = true;
@@ -255,9 +271,9 @@ namespace ModLauncher
 			if (!isModFound)
 			{
 				k = 0;
-				foreach (string val in listItems)
+				foreach (Mod val in mods)
 				{
-					if (val.IndexOf(choosedGameMod) >= 0)
+					if (val.Dir.IndexOf(choosedGameMod) >= 0)
 					{
 						modList.SelectedIndex = k;
 						break;
@@ -265,16 +281,6 @@ namespace ModLauncher
 					k++;
 				}
 			}
-
-#if TRANSLATION
-			// Translating
-			for (int i = 0; i < modList.Items.Count; i++)
-			{
-				string oldValue = (string)modList.Items[i];
-				TranslateModDirectory(ref oldValue);
-				modList.Items[i] = oldValue;
-			}
-#endif
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -329,7 +335,9 @@ namespace ModLauncher
 
 		private void startProcess(string name)
 		{
-			string choosedMod = modList.SelectedItem.ToString();
+		//	string choosedMod = modList.SelectedItem.ToString();
+			string choosedMod = mods[modList.SelectedIndex].Dir;
+			Console.WriteLine("Trying to run " + choosedMod);
 
 		//	Environment.SetEnvironmentVariable("VPROJECT", gamePath + "\\" + getModDirectory());
 			Environment.SetEnvironmentVariable("VPROJECT", gamePath + "\\" + choosedMod);
@@ -410,7 +418,8 @@ namespace ModLauncher
 
 		private void modList_TextChanged(object sender, EventArgs e)
 		{
-			string choosedMod = (sender as ComboBox).SelectedItem.ToString();
+		//	string choosedMod = (sender as ComboBox).SelectedItem.ToString();
+			string choosedMod = mods[modList.SelectedIndex].Dir;
 			setRegistryValue("LNGameMod", choosedMod);
 
 			// Saving parameters into registry
