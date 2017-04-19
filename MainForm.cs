@@ -297,15 +297,16 @@ namespace ModLauncher
 			setRegistryValue("ServerParameters", srvParametersText.Text);
 		}
 
-		private bool isExtended = false;
+	//	private bool isExtended = false;
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
-			this.Height = 140;
+		//	this.Height = 140;
 
 			gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
 			srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
 		}
 
+		/*
 		private void additionalParamsBut_Click(object sender, EventArgs e)
 		{
 			isExtended = !isExtended;
@@ -329,6 +330,7 @@ namespace ModLauncher
 				button.Image = Properties.Resources.arrowDown;
 			}
 		}
+		*/
 
 		private void parametersText_Leave(object sender, EventArgs e)
 		{
