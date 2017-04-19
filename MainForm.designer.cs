@@ -258,6 +258,7 @@
 			this.srvParametersText.Size = new System.Drawing.Size(171, 20);
 			this.srvParametersText.TabIndex = 26;
 			this.srvParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.srvParametersText_KeyDown);
+			this.srvParametersText.Leave += new System.EventHandler(this.srvParametersText_Leave);
 			// 
 			// btnRefresh
 			// 

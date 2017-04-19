@@ -39,6 +39,7 @@ namespace ModLauncher
 		}
 
 		List<Mod> mods = new List<Mod>();
+		bool bFullyLoaded = false;
 
 		public MainForm()
 		{
@@ -171,6 +172,7 @@ namespace ModLauncher
 				RegistryKey key = Registry.CurrentUser.CreateSubKey(getRegistryMainPath());
 				key.SetValue(subkey, value);
 				key.Close();
+				Console.WriteLine("Writing " + value + " at " + subkey);
 			}
 			catch (Exception ex)
 			{
@@ -286,6 +288,7 @@ namespace ModLauncher
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 			RefreshModList();
+			bFullyLoaded = true;
 		}
 
 		private void SaveAdditionalParameters()
@@ -329,7 +332,13 @@ namespace ModLauncher
 
 		private void parametersText_Leave(object sender, EventArgs e)
 		{
-		//	Console.WriteLine("unfocused");
+			// Saving parameters into registry
+			SaveAdditionalParameters();
+		}
+
+		private void srvParametersText_Leave(object sender, EventArgs e)
+		{
+			// Saving parameters into registry
 			SaveAdditionalParameters();
 		}
 
@@ -360,13 +369,16 @@ namespace ModLauncher
 		private void closeProcess(string name)
 		{
 			Process[] processes = Process.GetProcessesByName(name);
+			Console.WriteLine("Trying to kill " + name);
 			int procCount = processes.Length;
 			if (procCount > 0)
 			{
 				for (int i = 0; i < procCount; i++)
 				{
+					Console.WriteLine("\t" + Path.GetDirectoryName(processes[i].Modules[0].FileName));
 					// Close only process that exists aside program
-					bool bSamePath = Path.GetDirectoryName(processes[0].Modules[0].FileName).Equals(gamePath);
+					bool isHLDS = name.Contains("hlds");
+					bool bSamePath = Path.GetDirectoryName(processes[i].Modules[0].FileName).Equals(isHLDS ? gamePath + "\\bin" : gamePath);
 					if (bSamePath)
 					{
 						processes[i].Kill();
@@ -418,6 +430,9 @@ namespace ModLauncher
 
 		private void modList_TextChanged(object sender, EventArgs e)
 		{
+			if (!bFullyLoaded)
+				return;
+
 		//	string choosedMod = (sender as ComboBox).SelectedItem.ToString();
 			string choosedMod = mods[modList.SelectedIndex].Dir;
 			setRegistryValue("LNGameMod", choosedMod);
