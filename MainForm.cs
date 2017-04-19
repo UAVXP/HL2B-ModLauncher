@@ -357,9 +357,24 @@ namespace ModLauncher
 		//	Process.Start(pathToApp + "\\" + appExecutable, "-game " + FileSystem.Main.getModDirectory());
 			Process process = new Process();
 			ProcessStartInfo startInfo = new ProcessStartInfo();
-			startInfo.WorkingDirectory = String.Format(@"{0}\{1}", gamePath, choosedMod);
-			startInfo.FileName = String.Format(@"{0}\{1}", gamePath, name);
-			startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, ((name.Contains("hlds.exe")) ? srvParametersText.Text : gameParametersText.Text));
+
+			bool isHLDS = name.Contains("hlds.exe");
+
+			if (isHLDS)
+			{
+				Console.WriteLine("Running HLDS...");
+				startInfo.WorkingDirectory = String.Format(@"{0}\bin", gamePath);
+				startInfo.FileName = String.Format(@"{0}\bin\{1}", gamePath, name);
+				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, srvParametersText.Text);
+			}
+			else
+			{
+				Console.WriteLine("Running HL2...");
+				startInfo.WorkingDirectory = gamePath;
+				startInfo.FileName = String.Format(@"{0}\{1}", gamePath, name);
+				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, gameParametersText.Text);
+			}
+
 			startInfo.CreateNoWindow = true;
 		//	MessageBox.Show(pathToApp + "; " + (pathToApp + "\\" + appExecutable) + "; " + ("-game " + FileSystem.Main.getModDirectory()));
 		//	Process.Start(startInfo);
@@ -409,14 +424,14 @@ namespace ModLauncher
 
 		private void srvStartButton_Click(object sender, EventArgs e)
 		{
-			startProcess( @"bin\hlds.exe" );
+			startProcess( "hlds.exe" );
 		}
 
 		private void srvParametersText_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter)
 			{
-				startProcess(@"bin\hlds.exe");
+				startProcess("hlds.exe");
 			}
 		}
 
