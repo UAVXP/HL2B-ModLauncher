@@ -5,7 +5,7 @@ using System.Text;
 namespace ModLauncher
 {
 	[Serializable]
-	class Mod
+	public class Mod
 	{
 		public string Dir { get; set; }
 		public string Name { get; set; }

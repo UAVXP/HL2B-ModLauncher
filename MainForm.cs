@@ -44,9 +44,10 @@ namespace ModLauncher
 		public static string gamePath = Directory.GetCurrentDirectory();
 #endif
 
-		List<Mod> mods = new List<Mod>();
+		public List<Mod> mods = new List<Mod>();
 		bool bFullyLoaded = false;
 		Settings settings = new Settings(gamePath);
+		frmParameters gameparams;
 
 		public MainForm()
 		{
@@ -251,7 +252,7 @@ namespace ModLauncher
 						gamename = TranslateModDirectory(ddir); // Trying to translate mod directory with known names
 					}
 
-					Console.WriteLine("Game: " + gamename);
+				//	Console.WriteLine("Game: " + gamename);
 
 					Mod mod = new Mod
 					{
@@ -269,7 +270,7 @@ namespace ModLauncher
 						}
 					}
 
-					Console.WriteLine(string.Format("{0}, {1}, {2}", mod.Dir, mod.Name, mod.Parameters));
+				//	Console.WriteLine(string.Format("{0}, {1}, {2}", mod.Dir, mod.Name, mod.Parameters));
 					mods.Add(mod);
 				}
 			}
@@ -307,15 +308,51 @@ namespace ModLauncher
 			}
 		}
 
+		public void RefreshMapLists()
+		{
+			gameMapList.Items.Clear();
+			srvMapList.Items.Clear();
+
+			Mod mod = mods[modList.SelectedIndex];
+			string choosedMod = mod.Dir;
+
+			if (!Directory.Exists(gamePath + "\\" + choosedMod + "\\maps"))
+				return;
+
+			int i = 0;
+			foreach (string map in Directory.GetFiles(gamePath + "\\" + choosedMod + "\\maps", "*.bsp", SearchOption.TopDirectoryOnly))
+			{
+				string mapnoext = Path.GetFileNameWithoutExtension(map);
+				gameMapList.Items.Add(mapnoext);
+				srvMapList.Items.Add(mapnoext);
+
+				// Very stupid way to find this
+				if (gameparams.gameParametersText.Text.Contains("+map " + mapnoext))
+				{
+					gameMapList.SelectedIndex = i;
+				}
+				if (gameparams.srvParametersText.Text.Contains("+map " + mapnoext))
+				{
+					srvMapList.SelectedIndex = i;
+				}
+
+				i++;
+			}
+		}
+
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			gameparams = new frmParameters(this);
+
 			RefreshModList();
 			bFullyLoaded = true;
+
+			lblGamePath.Text = "Game: " + gamePath;
 		}
 
 		private void SaveAdditionalParameters()
 		{
-		//	setRegistryValue("GameParameters", gameParametersText.Text); // TODO: Do a separate parameters for every mod
+		//	setRegistryValue("GameParameters", gameParametersText.Text);
 		//	setRegistryValue("ServerParameters", srvParametersText.Text);
 
 		//	mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
@@ -338,8 +375,10 @@ namespace ModLauncher
 		//	gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
 		//	srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
 
-			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
-			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+			gameparams.gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
+			gameparams.srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+
+			RefreshMapLists();
 		}
 
 		/*
@@ -403,14 +442,14 @@ namespace ModLauncher
 				Console.WriteLine("Running HLDS...");
 				startInfo.WorkingDirectory = String.Format(@"{0}\bin", gamePath);
 				startInfo.FileName = String.Format(@"{0}\bin\{1}", gamePath, name);
-				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, srvParametersText.Text);
+				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, gameparams.srvParametersText.Text);
 			}
 			else
 			{
 				Console.WriteLine("Running HL2...");
 				startInfo.WorkingDirectory = gamePath;
 				startInfo.FileName = String.Format(@"{0}\{1}", gamePath, name);
-				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, gameParametersText.Text);
+				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, gameparams.gameParametersText.Text);
 			}
 
 			startInfo.CreateNoWindow = true;
@@ -514,18 +553,32 @@ namespace ModLauncher
 			// Saving parameters into registry
 		//	SaveAdditionalParameters();
 
-			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
-			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+			gameparams.gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
+			gameparams.srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+
+			RefreshMapLists();
 		}
 
 		private void gameParametersText_TextChanged(object sender, EventArgs e)
 		{
-			mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
+			mods[modList.SelectedIndex].Parameters = gameparams.gameParametersText.Text;
 		}
 
 		private void srvParametersText_TextChanged(object sender, EventArgs e)
 		{
-			mods[modList.SelectedIndex].ServerParameters = srvParametersText.Text;
+			mods[modList.SelectedIndex].ServerParameters = gameparams.srvParametersText.Text;
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+		//	gameparams.ShowDialog();
+			if (gameparams == null)
+				gameparams = new frmParameters(this);
+
+			if (!gameparams.Visible)
+				gameparams.Show();
+			else
+				gameparams.Focus();
 		}
 	}
 }
