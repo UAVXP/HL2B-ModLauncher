@@ -39,19 +39,20 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.srvStartButton = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.srvMapList = new System.Windows.Forms.ComboBox();
 			this.srvStopButton = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.btnParams = new System.Windows.Forms.Button();
+			this.gameMapList = new System.Windows.Forms.ComboBox();
 			this.gameStopButton = new System.Windows.Forms.Button();
 			this.gameStartButton = new System.Windows.Forms.Button();
+			this.btnParams = new System.Windows.Forms.Button();
 			this.btnRefresh = new System.Windows.Forms.Button();
 			this.ttAdditionalParams = new System.Windows.Forms.ToolTip(this.components);
 			this.ttChooseModification = new System.Windows.Forms.ToolTip(this.components);
 			this.ttCommon = new System.Windows.Forms.ToolTip(this.components);
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.lblGamePath = new System.Windows.Forms.ToolStripStatusLabel();
-			this.gameMapList = new System.Windows.Forms.ComboBox();
-			this.srvMapList = new System.Windows.Forms.ComboBox();
+			this.ttMapSelect = new System.Windows.Forms.ToolTip(this.components);
 			this.move.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.minimize)).BeginInit();
@@ -177,6 +178,19 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Dedicated server (hlds.exe)";
 			// 
+			// srvMapList
+			// 
+			this.srvMapList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.srvMapList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.srvMapList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.srvMapList.ForeColor = System.Drawing.Color.Silver;
+			this.srvMapList.FormattingEnabled = true;
+			this.srvMapList.Location = new System.Drawing.Point(21, 59);
+			this.srvMapList.Name = "srvMapList";
+			this.srvMapList.Size = new System.Drawing.Size(196, 21);
+			this.srvMapList.TabIndex = 28;
+			this.ttMapSelect.SetToolTip(this.srvMapList, "Here you can choose map for dedicated server");
+			// 
 			// srvStopButton
 			// 
 			this.srvStopButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
@@ -205,19 +219,18 @@
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Game (hl2.exe)";
 			// 
-			// btnParams
+			// gameMapList
 			// 
-			this.btnParams.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
-			this.btnParams.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnParams.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.btnParams.Location = new System.Drawing.Point(508, 68);
-			this.btnParams.Name = "btnParams";
-			this.btnParams.Size = new System.Drawing.Size(132, 28);
-			this.btnParams.TabIndex = 25;
-			this.btnParams.Text = "Game Parameters";
-			this.ttCommon.SetToolTip(this.btnParams, "Notice: This will stop ALL of hl2.exe occurences from game directory!");
-			this.btnParams.UseVisualStyleBackColor = false;
-			this.btnParams.Click += new System.EventHandler(this.button1_Click);
+			this.gameMapList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.gameMapList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.gameMapList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.gameMapList.ForeColor = System.Drawing.Color.Silver;
+			this.gameMapList.FormattingEnabled = true;
+			this.gameMapList.Location = new System.Drawing.Point(21, 58);
+			this.gameMapList.Name = "gameMapList";
+			this.gameMapList.Size = new System.Drawing.Size(196, 21);
+			this.gameMapList.TabIndex = 27;
+			this.ttMapSelect.SetToolTip(this.gameMapList, "Here you can choose map for game client");
 			// 
 			// gameStopButton
 			// 
@@ -245,6 +258,20 @@
 			this.gameStartButton.Text = "Start";
 			this.gameStartButton.UseVisualStyleBackColor = false;
 			this.gameStartButton.Click += new System.EventHandler(this.gameStartButton_Click);
+			// 
+			// btnParams
+			// 
+			this.btnParams.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
+			this.btnParams.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnParams.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
+			this.btnParams.Location = new System.Drawing.Point(508, 68);
+			this.btnParams.Name = "btnParams";
+			this.btnParams.Size = new System.Drawing.Size(132, 28);
+			this.btnParams.TabIndex = 25;
+			this.btnParams.Text = "Game Parameters";
+			this.ttAdditionalParams.SetToolTip(this.btnParams, "You can setup additional parameters here");
+			this.btnParams.UseVisualStyleBackColor = false;
+			this.btnParams.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// btnRefresh
 			// 
@@ -287,31 +314,9 @@
 			this.lblGamePath.Size = new System.Drawing.Size(117, 17);
 			this.lblGamePath.Text = "toolStripStatusLabel1";
 			// 
-			// gameMapList
+			// ttMapSelect
 			// 
-			this.gameMapList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-			this.gameMapList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.gameMapList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.gameMapList.ForeColor = System.Drawing.Color.Silver;
-			this.gameMapList.FormattingEnabled = true;
-			this.gameMapList.Location = new System.Drawing.Point(21, 58);
-			this.gameMapList.Name = "gameMapList";
-			this.gameMapList.Size = new System.Drawing.Size(196, 21);
-			this.gameMapList.TabIndex = 27;
-			this.ttChooseModification.SetToolTip(this.gameMapList, "Here you can choose modification that you want to run");
-			// 
-			// srvMapList
-			// 
-			this.srvMapList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-			this.srvMapList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.srvMapList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.srvMapList.ForeColor = System.Drawing.Color.Silver;
-			this.srvMapList.FormattingEnabled = true;
-			this.srvMapList.Location = new System.Drawing.Point(21, 59);
-			this.srvMapList.Name = "srvMapList";
-			this.srvMapList.Size = new System.Drawing.Size(196, 21);
-			this.srvMapList.TabIndex = 28;
-			this.ttChooseModification.SetToolTip(this.srvMapList, "Here you can choose modification that you want to run");
+			this.ttMapSelect.ToolTipTitle = "Map Select";
 			// 
 			// MainForm
 			// 
@@ -373,5 +378,6 @@
 		public System.Windows.Forms.ComboBox modList;
 		public System.Windows.Forms.ComboBox gameMapList;
 		public System.Windows.Forms.ComboBox srvMapList;
+		private System.Windows.Forms.ToolTip ttMapSelect;
 	}
 }

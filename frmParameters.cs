@@ -67,6 +67,8 @@ namespace ModLauncher
 
 		private void frmParameters_Shown(object sender, EventArgs e)
 		{
+			if (parent.mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist and user press params
+
 			gameParametersText.Text = parent.mods[parent.modList.SelectedIndex].Parameters;
 			srvParametersText.Text = parent.mods[parent.modList.SelectedIndex].ServerParameters;
 		}
