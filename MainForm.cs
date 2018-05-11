@@ -39,7 +39,7 @@ namespace ModLauncher
 		}
 
 #if DEBUG
-		public static string gamePath = @"D:\Games\HL2Leak\AHL2_R1";
+		public static string gamePath = @"D:\Games\HL2Leak\AHL2_R";
 #else
 		public static string gamePath = Directory.GetCurrentDirectory();
 #endif
@@ -363,7 +363,7 @@ namespace ModLauncher
 			lblGamePath.Text = "Game: " + gamePath;
 		}
 
-		private void SaveAdditionalParameters()
+		public void SaveAdditionalParameters()
 		{
 		//	setRegistryValue("GameParameters", gameParametersText.Text);
 		//	setRegistryValue("ServerParameters", srvParametersText.Text);
@@ -383,7 +383,7 @@ namespace ModLauncher
 	//	private bool isExtended = false;
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
-			//	this.Height = 140;
+		//	this.Height = 140;
 
 		//	gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
 		//	srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
@@ -422,20 +422,6 @@ namespace ModLauncher
 			}
 		}
 		*/
-
-		private void parametersText_Leave(object sender, EventArgs e)
-		{
-		//	mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
-			// Saving parameters into registry
-			SaveAdditionalParameters();
-		}
-
-		private void srvParametersText_Leave(object sender, EventArgs e)
-		{
-		//	mods[modList.SelectedIndex].ServerParameters = srvParametersText.Text;
-			// Saving parameters into registry
-			SaveAdditionalParameters();
-		}
 
 		private void startProcess(string name)
 		{
@@ -575,16 +561,6 @@ namespace ModLauncher
 			gameparams.srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
 
 			RefreshMapLists();
-		}
-
-		private void gameParametersText_TextChanged(object sender, EventArgs e)
-		{
-			mods[modList.SelectedIndex].Parameters = gameparams.gameParametersText.Text;
-		}
-
-		private void srvParametersText_TextChanged(object sender, EventArgs e)
-		{
-			mods[modList.SelectedIndex].ServerParameters = gameparams.srvParametersText.Text;
 		}
 
 		private void button1_Click(object sender, EventArgs e)

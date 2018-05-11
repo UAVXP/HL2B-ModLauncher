@@ -37,9 +37,9 @@
 			this.close = new System.Windows.Forms.PictureBox();
 			this.ttAdditionalParams = new System.Windows.Forms.ToolTip(this.components);
 			this.gameParametersText = new System.Windows.Forms.TextBox();
+			this.srvParametersText = new System.Windows.Forms.TextBox();
 			this.ttChooseModification = new System.Windows.Forms.ToolTip(this.components);
 			this.ttCommon = new System.Windows.Forms.ToolTip(this.components);
-			this.srvParametersText = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.move.SuspendLayout();
@@ -125,10 +125,8 @@
 			this.gameParametersText.Size = new System.Drawing.Size(446, 20);
 			this.gameParametersText.TabIndex = 23;
 			this.ttAdditionalParams.SetToolTip(this.gameParametersText, "Additional parameters for game");
-			// 
-			// ttChooseModification
-			// 
-			this.ttChooseModification.ToolTipTitle = "Modification";
+			this.gameParametersText.TextChanged += new System.EventHandler(this.gameParametersText_TextChanged);
+			this.gameParametersText.Leave += new System.EventHandler(this.gameParametersText_Leave);
 			// 
 			// srvParametersText
 			// 
@@ -140,6 +138,12 @@
 			this.srvParametersText.Size = new System.Drawing.Size(446, 20);
 			this.srvParametersText.TabIndex = 27;
 			this.ttAdditionalParams.SetToolTip(this.srvParametersText, "Additional parameters for server");
+			this.srvParametersText.TextChanged += new System.EventHandler(this.srvParametersText_TextChanged);
+			this.srvParametersText.Leave += new System.EventHandler(this.srvParametersText_Leave);
+			// 
+			// ttChooseModification
+			// 
+			this.ttChooseModification.ToolTipTitle = "Modification";
 			// 
 			// label2
 			// 

@@ -72,5 +72,25 @@ namespace ModLauncher
 			gameParametersText.Text = parent.mods[parent.modList.SelectedIndex].Parameters;
 			srvParametersText.Text = parent.mods[parent.modList.SelectedIndex].ServerParameters;
 		}
+
+		private void gameParametersText_Leave(object sender, EventArgs e)
+		{
+			parent.SaveAdditionalParameters();
+		}
+
+		private void srvParametersText_Leave(object sender, EventArgs e)
+		{
+			parent.SaveAdditionalParameters();
+		}
+
+		private void gameParametersText_TextChanged(object sender, EventArgs e)
+		{
+			parent.mods[parent.modList.SelectedIndex].Parameters = gameParametersText.Text;
+		}
+
+		private void srvParametersText_TextChanged(object sender, EventArgs e)
+		{
+			parent.mods[parent.modList.SelectedIndex].ServerParameters = srvParametersText.Text;
+		}
 	}
 }
