@@ -39,7 +39,7 @@ namespace ModLauncher
 		}
 
 #if DEBUG
-		public static string gamePath = @"D:\AHL2_R";
+		public static string gamePath = @"D:\Games\HL2Leak\AHL2_R1";
 #else
 		public static string gamePath = Directory.GetCurrentDirectory();
 #endif
@@ -238,7 +238,20 @@ namespace ModLauncher
 			modList.Items.Clear();
 			mods.Clear();
 
-			foreach (string dir in Directory.GetDirectories(gamePath))
+            if (!Directory.Exists(gamePath))
+            {
+                MessageBox.Show("This folder doesn't exist", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string[] gamefolders = Directory.GetDirectories(gamePath);
+            if (gamefolders.Length <= 0)
+            {
+                MessageBox.Show("This folder doesn't have any detectable mod folders", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            foreach (string dir in gamefolders)
 			{
 				if (isModDirectory(dir))
 				{
