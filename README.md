@@ -1,5 +1,5 @@
 ## Half-Life 2 Beta (Leak) Mod Launcher
-Modification launcher for LeakNet HL2 Beta patch
+Modification launcher for LeakNet HL2 Beta patch. Requires: .NET Framework 2.0
 
 ------
 #### Screenshots
