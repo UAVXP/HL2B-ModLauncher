@@ -18,26 +18,6 @@ namespace ModLauncher
 {
 	public partial class MainForm : Form
 	{
-		public const int WM_NCLBUTTONDOWN = 0xA1;
-		public const int HTCAPTION = 0x2;
-		[DllImport("User32.dll")]
-		public static extern bool ReleaseCapture();
-		[DllImport("User32.dll")]
-		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-		// Define the CS_DROPSHADOW constant
-		private const int CS_DROPSHADOW = 0x00020000;
-		// Override the CreateParams property
-		protected override CreateParams CreateParams
-		{
-			get
-			{
-				CreateParams cp = base.CreateParams;
-				cp.ClassStyle |= CS_DROPSHADOW;
-				return cp;
-			}
-		}
-
 #if DEBUG
 		public static string gamePath = @"D:\Games\HL2Leak\AHL2_R";
 #else
@@ -53,26 +33,6 @@ namespace ModLauncher
 		{
 			InitializeComponent();
 		}
-
-		private void close_Click(object sender, EventArgs e)
-		{
-			SaveAdditionalParameters();
-			this.Close();
-		}
-
-		private void minimize_Click(object sender, EventArgs e)
-		{
-			this.WindowState = FormWindowState.Minimized;
-		}
-
-		private void move_MouseDown(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Left)
-			{
-				ReleaseCapture();
-				SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
-			}
-        }
 
 		public static bool isModDirectory(string path)
 		{
@@ -365,6 +325,7 @@ namespace ModLauncher
 
 		public void SaveAdditionalParameters()
 		{
+			Console.WriteLine("Carefully closing an application...");
 		//	setRegistryValue("GameParameters", gameParametersText.Text);
 		//	setRegistryValue("ServerParameters", srvParametersText.Text);
 
@@ -573,6 +534,22 @@ namespace ModLauncher
 				gameparams.Show();
 			else
 				gameparams.Focus();
+		}
+
+		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+		//	SaveAdditionalParameters();
+			this.Close();
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			SaveAdditionalParameters();
+		}
+
+		private void btnRefreshMods_Click(object sender, EventArgs e)
+		{
+			RefreshModList();
 		}
 	}
 }
