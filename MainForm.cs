@@ -527,7 +527,7 @@ namespace ModLauncher
 		private void button1_Click(object sender, EventArgs e)
 		{
 		//	gameparams.ShowDialog();
-			if (gameparams == null)
+			if (gameparams == null || gameparams.IsDisposed)
 				gameparams = new frmParameters(this);
 
 			if (!gameparams.Visible)
