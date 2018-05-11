@@ -388,10 +388,13 @@ namespace ModLauncher
 		//	gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
 		//	srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
 
+			if (mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist
+
 			gameparams.gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
 			gameparams.srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
 
 			RefreshMapLists();
+
 		}
 
 		/*
@@ -436,7 +439,8 @@ namespace ModLauncher
 
 		private void startProcess(string name)
 		{
-		//	string choosedMod = modList.SelectedItem.ToString();
+			if (mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist and user press run
+
 			string choosedMod = mods[modList.SelectedIndex].Dir;
 			Console.WriteLine("Trying to run " + choosedMod);
 
