@@ -238,20 +238,20 @@ namespace ModLauncher
 			modList.Items.Clear();
 			mods.Clear();
 
-            if (!Directory.Exists(gamePath))
-            {
-                MessageBox.Show("This folder doesn't exist", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+			if (!Directory.Exists(gamePath))
+			{
+				MessageBox.Show("This folder doesn't exist", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
 
-            string[] gamefolders = Directory.GetDirectories(gamePath);
-            if (gamefolders.Length <= 0)
-            {
-                MessageBox.Show("This folder doesn't have any detectable mod folders", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+			string[] gamefolders = Directory.GetDirectories(gamePath);
+			if (gamefolders.Length <= 0)
+			{
+				MessageBox.Show("This folder doesn't have any detectable mod folders", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				return;
+			}
 
-            foreach (string dir in gamefolders)
+			foreach (string dir in gamefolders)
 			{
 				if (isModDirectory(dir))
 				{
@@ -383,7 +383,7 @@ namespace ModLauncher
 	//	private bool isExtended = false;
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
-		//	this.Height = 140;
+			//	this.Height = 140;
 
 		//	gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
 		//	srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
@@ -441,6 +441,7 @@ namespace ModLauncher
 		{
 			if (mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist and user press run
 
+		//	string choosedMod = modList.SelectedItem.ToString();
 			string choosedMod = mods[modList.SelectedIndex].Dir;
 			Console.WriteLine("Trying to run " + choosedMod);
 
