@@ -484,7 +484,7 @@ namespace ModLauncher
 				{
 					bSamePath = Path.GetDirectoryName(proc.Modules[0].FileName).Equals(gamePath);
 				}
-				catch { return false; }
+				catch { continue; }
 				return bSamePath;
 			}
 
