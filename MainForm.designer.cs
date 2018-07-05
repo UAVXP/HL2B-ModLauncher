@@ -32,13 +32,8 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.srvStartButton = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.srvMapList = new System.Windows.Forms.ComboBox();
-			this.srvStopButton = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.gameMapList = new System.Windows.Forms.ComboBox();
-			this.gameStopButton = new System.Windows.Forms.Button();
 			this.gameStartButton = new System.Windows.Forms.Button();
-			this.btnParams = new System.Windows.Forms.Button();
 			this.ttAdditionalParams = new System.Windows.Forms.ToolTip(this.components);
 			this.ttChooseModification = new System.Windows.Forms.ToolTip(this.components);
 			this.ttCommon = new System.Windows.Forms.ToolTip(this.components);
@@ -47,8 +42,13 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.btnRefreshMods = new System.Windows.Forms.ToolStripMenuItem();
 			this.modList = new System.Windows.Forms.ToolStripComboBox();
-			this.btnRefreshMods = new System.Windows.Forms.Button();
+			this.gameParametersText = new System.Windows.Forms.TextBox();
+			this.srvParametersText = new System.Windows.Forms.TextBox();
+			this.tmrRunningCheck = new System.Windows.Forms.Timer(this.components);
+			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.resetWindowSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -62,7 +62,7 @@
 			this.srvStartButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.srvStartButton.Location = new System.Drawing.Point(21, 19);
 			this.srvStartButton.Name = "srvStartButton";
-			this.srvStartButton.Size = new System.Drawing.Size(133, 32);
+			this.srvStartButton.Size = new System.Drawing.Size(196, 32);
 			this.srvStartButton.TabIndex = 23;
 			this.srvStartButton.Text = "Start";
 			this.srvStartButton.UseVisualStyleBackColor = false;
@@ -70,113 +70,50 @@
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-			this.groupBox1.Controls.Add(this.srvMapList);
-			this.groupBox1.Controls.Add(this.srvStopButton);
+			this.groupBox1.Controls.Add(this.srvParametersText);
 			this.groupBox1.Controls.Add(this.srvStartButton);
 			this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.groupBox1.Location = new System.Drawing.Point(263, 35);
+			this.groupBox1.Location = new System.Drawing.Point(263, 34);
+			this.groupBox1.MinimumSize = new System.Drawing.Size(239, 93);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(239, 93);
 			this.groupBox1.TabIndex = 24;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Dedicated server (hlds.exe)";
 			// 
-			// srvMapList
-			// 
-			this.srvMapList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-			this.srvMapList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.srvMapList.ForeColor = System.Drawing.Color.Silver;
-			this.srvMapList.FormattingEnabled = true;
-			this.srvMapList.Location = new System.Drawing.Point(21, 59);
-			this.srvMapList.Name = "srvMapList";
-			this.srvMapList.Size = new System.Drawing.Size(196, 21);
-			this.srvMapList.TabIndex = 28;
-			this.ttChooseModification.SetToolTip(this.srvMapList, "Here you can choose modification that you want to run");
-			// 
-			// srvStopButton
-			// 
-			this.srvStopButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
-			this.srvStopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.srvStopButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.srvStopButton.Location = new System.Drawing.Point(160, 19);
-			this.srvStopButton.Name = "srvStopButton";
-			this.srvStopButton.Size = new System.Drawing.Size(57, 32);
-			this.srvStopButton.TabIndex = 24;
-			this.srvStopButton.Text = "Stop";
-			this.ttCommon.SetToolTip(this.srvStopButton, "Notice: This will stop ALL of hlds.exe occurences from game directory!");
-			this.srvStopButton.UseVisualStyleBackColor = false;
-			this.srvStopButton.Click += new System.EventHandler(this.srvStopButton_Click);
-			// 
 			// groupBox2
 			// 
-			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox2.BackColor = System.Drawing.Color.Transparent;
-			this.groupBox2.Controls.Add(this.gameMapList);
-			this.groupBox2.Controls.Add(this.gameStopButton);
+			this.groupBox2.Controls.Add(this.gameParametersText);
 			this.groupBox2.Controls.Add(this.gameStartButton);
 			this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.groupBox2.Location = new System.Drawing.Point(12, 35);
+			this.groupBox2.Location = new System.Drawing.Point(11, 34);
+			this.groupBox2.MinimumSize = new System.Drawing.Size(239, 93);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(239, 93);
 			this.groupBox2.TabIndex = 25;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Game (hl2.exe)";
 			// 
-			// gameMapList
-			// 
-			this.gameMapList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-			this.gameMapList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.gameMapList.ForeColor = System.Drawing.Color.Silver;
-			this.gameMapList.FormattingEnabled = true;
-			this.gameMapList.Location = new System.Drawing.Point(21, 58);
-			this.gameMapList.Name = "gameMapList";
-			this.gameMapList.Size = new System.Drawing.Size(196, 21);
-			this.gameMapList.TabIndex = 27;
-			this.ttChooseModification.SetToolTip(this.gameMapList, "Here you can choose modification that you want to run");
-			// 
-			// gameStopButton
-			// 
-			this.gameStopButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
-			this.gameStopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.gameStopButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.gameStopButton.Location = new System.Drawing.Point(160, 19);
-			this.gameStopButton.Name = "gameStopButton";
-			this.gameStopButton.Size = new System.Drawing.Size(57, 32);
-			this.gameStopButton.TabIndex = 24;
-			this.gameStopButton.Text = "Stop";
-			this.ttCommon.SetToolTip(this.gameStopButton, "Notice: This will stop ALL of hl2.exe occurences from game directory!");
-			this.gameStopButton.UseVisualStyleBackColor = false;
-			this.gameStopButton.Click += new System.EventHandler(this.gameStopButton_Click);
-			// 
 			// gameStartButton
 			// 
+			this.gameStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.gameStartButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
 			this.gameStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.gameStartButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.gameStartButton.Location = new System.Drawing.Point(21, 19);
 			this.gameStartButton.Name = "gameStartButton";
-			this.gameStartButton.Size = new System.Drawing.Size(133, 32);
+			this.gameStartButton.Size = new System.Drawing.Size(196, 32);
 			this.gameStartButton.TabIndex = 23;
 			this.gameStartButton.Text = "Start";
 			this.gameStartButton.UseVisualStyleBackColor = false;
 			this.gameStartButton.Click += new System.EventHandler(this.gameStartButton_Click);
-			// 
-			// btnParams
-			// 
-			this.btnParams.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnParams.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
-			this.btnParams.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnParams.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.btnParams.Location = new System.Drawing.Point(507, 67);
-			this.btnParams.Name = "btnParams";
-			this.btnParams.Size = new System.Drawing.Size(135, 26);
-			this.btnParams.TabIndex = 25;
-			this.btnParams.Text = "Parameters";
-			this.ttCommon.SetToolTip(this.btnParams, "Notice: This will stop ALL of hl2.exe occurences from game directory!");
-			this.btnParams.UseVisualStyleBackColor = false;
-			this.btnParams.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// ttAdditionalParams
 			// 
@@ -191,9 +128,9 @@
 			this.statusStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblGamePath});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 138);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 139);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(654, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(514, 22);
 			this.statusStrip1.SizingGrip = false;
 			this.statusStrip1.TabIndex = 26;
 			this.statusStrip1.Text = "statusStrip1";
@@ -210,10 +147,12 @@
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.modList});
+            this.btnRefreshMods,
+            this.modList,
+            this.viewToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(654, 27);
+			this.menuStrip1.Size = new System.Drawing.Size(514, 27);
 			this.menuStrip1.TabIndex = 27;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -228,9 +167,17 @@
 			// quitToolStripMenuItem
 			// 
 			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-			this.quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.quitToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
 			this.quitToolStripMenuItem.Text = "Quit";
 			this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+			// 
+			// btnRefreshMods
+			// 
+			this.btnRefreshMods.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.btnRefreshMods.Image = global::ModLauncher.Properties.Resources.refresh;
+			this.btnRefreshMods.Name = "btnRefreshMods";
+			this.btnRefreshMods.Size = new System.Drawing.Size(28, 23);
+			this.btnRefreshMods.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
 			// 
 			// modList
 			// 
@@ -240,38 +187,64 @@
 			this.modList.Size = new System.Drawing.Size(121, 23);
 			this.modList.SelectedIndexChanged += new System.EventHandler(this.modList_SelectedIndexChanged);
 			// 
-			// btnRefreshMods
+			// gameParametersText
 			// 
-			this.btnRefreshMods.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnRefreshMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
-			this.btnRefreshMods.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnRefreshMods.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
-			this.btnRefreshMods.Location = new System.Drawing.Point(507, 35);
-			this.btnRefreshMods.Name = "btnRefreshMods";
-			this.btnRefreshMods.Size = new System.Drawing.Size(135, 26);
-			this.btnRefreshMods.TabIndex = 28;
-			this.btnRefreshMods.Text = "Refresh mods list";
-			this.ttCommon.SetToolTip(this.btnRefreshMods, "Notice: This will stop ALL of hl2.exe occurences from game directory!");
-			this.btnRefreshMods.UseVisualStyleBackColor = false;
-			this.btnRefreshMods.Click += new System.EventHandler(this.btnRefreshMods_Click);
+			this.gameParametersText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.gameParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.gameParametersText.ForeColor = System.Drawing.Color.Silver;
+			this.gameParametersText.Location = new System.Drawing.Point(21, 57);
+			this.gameParametersText.Name = "gameParametersText";
+			this.gameParametersText.Size = new System.Drawing.Size(196, 20);
+			this.gameParametersText.TabIndex = 29;
+			this.gameParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gameParametersText_KeyDown);
+			// 
+			// srvParametersText
+			// 
+			this.srvParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.srvParametersText.ForeColor = System.Drawing.Color.Silver;
+			this.srvParametersText.Location = new System.Drawing.Point(21, 57);
+			this.srvParametersText.Name = "srvParametersText";
+			this.srvParametersText.Size = new System.Drawing.Size(196, 20);
+			this.srvParametersText.TabIndex = 30;
+			this.srvParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.srvParametersText_KeyDown);
+			// 
+			// tmrRunningCheck
+			// 
+			this.tmrRunningCheck.Enabled = true;
+			this.tmrRunningCheck.Interval = 500;
+			this.tmrRunningCheck.Tick += new System.EventHandler(this.tmrRunningCheck_Tick);
+			// 
+			// viewToolStripMenuItem
+			// 
+			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resetWindowSizeToolStripMenuItem});
+			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
+			this.viewToolStripMenuItem.Text = "View";
+			// 
+			// resetWindowSizeToolStripMenuItem
+			// 
+			this.resetWindowSizeToolStripMenuItem.Name = "resetWindowSizeToolStripMenuItem";
+			this.resetWindowSizeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.resetWindowSizeToolStripMenuItem.Text = "Reset Window Size";
+			this.resetWindowSizeToolStripMenuItem.Click += new System.EventHandler(this.resetWindowSizeToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::ModLauncher.Properties.Resources.background002;
-			this.ClientSize = new System.Drawing.Size(654, 160);
-			this.Controls.Add(this.btnRefreshMods);
+			this.ClientSize = new System.Drawing.Size(514, 161);
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.statusStrip1);
-			this.Controls.Add(this.btnParams);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.ForeColor = System.Drawing.Color.Coral;
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
 			this.MaximizeBox = false;
+			this.MaximumSize = new System.Drawing.Size(10000, 200);
+			this.MinimumSize = new System.Drawing.Size(278, 200);
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "LeakNet - Mod Launcher";
@@ -279,7 +252,9 @@
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
@@ -293,22 +268,22 @@
 
 		private System.Windows.Forms.Button srvStartButton;
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Button srvStopButton;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.Button gameStopButton;
 		private System.Windows.Forms.Button gameStartButton;
 		private System.Windows.Forms.ToolTip ttAdditionalParams;
 		private System.Windows.Forms.ToolTip ttChooseModification;
 		private System.Windows.Forms.ToolTip ttCommon;
-		private System.Windows.Forms.Button btnParams;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel lblGamePath;
-		public System.Windows.Forms.ComboBox gameMapList;
-		public System.Windows.Forms.ComboBox srvMapList;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
 		public System.Windows.Forms.ToolStripComboBox modList;
-		private System.Windows.Forms.Button btnRefreshMods;
+		private System.Windows.Forms.ToolStripMenuItem btnRefreshMods;
+		private System.Windows.Forms.TextBox gameParametersText;
+		private System.Windows.Forms.TextBox srvParametersText;
+		private System.Windows.Forms.Timer tmrRunningCheck;
+		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem resetWindowSizeToolStripMenuItem;
 	}
 }

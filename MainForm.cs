@@ -27,7 +27,6 @@ namespace ModLauncher
 		public List<Mod> mods = new List<Mod>();
 		bool bFullyLoaded = false;
 		Settings settings = new Settings(gamePath);
-		frmParameters gameparams;
 
 		public MainForm()
 		{
@@ -281,49 +280,15 @@ namespace ModLauncher
 			}
 		}
 
-		public void RefreshMapLists()
-		{
-			gameMapList.Items.Clear();
-			srvMapList.Items.Clear();
-
-			Mod mod = mods[modList.SelectedIndex];
-			string choosedMod = mod.Dir;
-
-			if (!Directory.Exists(gamePath + "\\" + choosedMod + "\\maps"))
-				return;
-
-			int i = 0;
-			foreach (string map in Directory.GetFiles(gamePath + "\\" + choosedMod + "\\maps", "*.bsp", SearchOption.TopDirectoryOnly))
-			{
-				string mapnoext = Path.GetFileNameWithoutExtension(map);
-				gameMapList.Items.Add(mapnoext);
-				srvMapList.Items.Add(mapnoext);
-
-				// Very stupid way to find this
-				if (gameparams.gameParametersText.Text.Contains("+map " + mapnoext))
-				{
-					gameMapList.SelectedIndex = i;
-				}
-				if (gameparams.srvParametersText.Text.Contains("+map " + mapnoext))
-				{
-					srvMapList.SelectedIndex = i;
-				}
-
-				i++;
-			}
-		}
-
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			gameparams = new frmParameters(this);
-
 			RefreshModList();
 			bFullyLoaded = true;
 
 			lblGamePath.Text = "Game: " + gamePath;
 		}
 
-		public void SaveAdditionalParameters()
+		public void SaveAdditionalParameters() // TODO: Rename
 		{
 			Console.WriteLine("Carefully closing an application...");
 		//	setRegistryValue("GameParameters", gameParametersText.Text);
@@ -339,6 +304,33 @@ namespace ModLauncher
 
 		//	gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
 		//	srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+
+			SaveWindowSize(this.Width, this.Height);
+		}
+
+		private void SaveWindowSize(int width = 530, int height = 200) // Change after resizing in editor
+		{
+			setRegistryValue("LNMainWindowWidth", width.ToString());
+			setRegistryValue("LNMainWindowHeight", height.ToString());
+		}
+		private void RestoreWindowSize()
+		{
+			int width = this.Width;
+			int.TryParse(getRegistryValue(getRegistryMainPath(), "LNMainWindowWidth"), out width);
+			if (width != 0 && width != this.Width)
+				this.Width = width;
+
+			int height = this.Height;
+			int.TryParse(getRegistryValue(getRegistryMainPath(), "LNMainWindowHeight"), out height);
+			if (height != 0 && height != this.Height)
+				this.Height = height;
+		}
+		private void CenterizeWindow()
+		{
+			// Centering the window
+			Rectangle rect = Screen.PrimaryScreen.WorkingArea;
+			this.Top = (rect.Height / 2) - (this.Height / 2);
+			this.Left = (rect.Width / 2) - (this.Width / 2);
 		}
 
 	//	private bool isExtended = false;
@@ -346,16 +338,22 @@ namespace ModLauncher
 		{
 		//	this.Height = 140;
 
+			RestoreWindowSize();
+			CenterizeWindow();
+
 		//	gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
 		//	srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
 
 			if (mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist
 
-			gameparams.gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
-			gameparams.srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
+			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+		}
 
-			RefreshMapLists();
-
+		private void resetWindowSizeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveWindowSize(); // Saving the default parameters
+			RestoreWindowSize();
 		}
 
 		/*
@@ -402,26 +400,37 @@ namespace ModLauncher
 
 			bool isHLDS = name.Contains("hlds.exe");
 
-			if (isHLDS)
-			{
-				Console.WriteLine("Running HLDS...");
-				startInfo.WorkingDirectory = String.Format(@"{0}\bin", gamePath);
-				startInfo.FileName = String.Format(@"{0}\bin\{1}", gamePath, name);
-				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, gameparams.srvParametersText.Text);
-			}
-			else
+			if (!isHLDS)
 			{
 				Console.WriteLine("Running HL2...");
 				startInfo.WorkingDirectory = gamePath;
 				startInfo.FileName = String.Format(@"{0}\{1}", gamePath, name);
-				startInfo.Arguments = String.Format("-game \"{0}\" {1}", choosedMod, gameparams.gameParametersText.Text);
+				startInfo.Arguments = String.Format("-game \"{0}\" {1}",
+					choosedMod,
+					mods[modList.SelectedIndex].Parameters);
+			}
+			else
+			{
+				Console.WriteLine("Running HLDS...");
+				startInfo.WorkingDirectory = String.Format(@"{0}\bin", gamePath);
+				startInfo.FileName = String.Format(@"{0}\bin\{1}", gamePath, name);
+				startInfo.Arguments = String.Format("-game \"{0}\" {1}",
+					choosedMod,
+					mods[modList.SelectedIndex].ServerParameters);
 			}
 
 			startInfo.CreateNoWindow = true;
 		//	MessageBox.Show(pathToApp + "; " + (pathToApp + "\\" + appExecutable) + "; " + ("-game " + FileSystem.Main.getModDirectory()));
 		//	Process.Start(startInfo);
 			process.StartInfo = startInfo;
-			process.Start();
+
+			try
+			{
+				Console.WriteLine("\tParameters: " + startInfo.Arguments);
+				process.Start();
+
+			}
+			catch { MessageBox.Show("Game process cannot run properly. Check executable (hl2.exe or bin\\hlds.exe) for existance", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 		//	Directory.SetCurrentDirectory(oldCurDir);
 
 			// Cleaning up
@@ -465,14 +474,44 @@ namespace ModLauncher
 			GC.Collect();
 		}
 
-		private void gameStartButton_Click(object sender, EventArgs e)
+		private bool isRunning(string name)
 		{
-			startProcess( "hl2.exe" );
+			Process[] processes = Process.GetProcessesByName(name);
+			foreach (Process proc in processes)
+			{
+				bool bSamePath = false;
+				try
+				{
+					bSamePath = Path.GetDirectoryName(proc.Modules[0].FileName).Equals(gamePath);
+				}
+				catch { return false; }
+				return bSamePath;
+			}
+
+			return false;
 		}
 
-		private void gameParametersText_KeyDown(object sender, KeyEventArgs e)
+		private void tmrRunningCheck_Tick(object sender, EventArgs e)
 		{
-			if (e.KeyCode == Keys.Enter)
+			if (isRunning("hl2"))
+				gameStartButton.Text = "Stop";
+			else
+				gameStartButton.Text = "Start";
+
+			if (isRunning("hlds"))
+				srvStartButton.Text = "Stop";
+			else
+				srvStartButton.Text = "Start";
+		}
+
+		private void gameStartButton_Click(object sender, EventArgs e)
+		{
+		//	startProcess( "hl2.exe" );
+			if (isRunning("hl2"))
+			{
+				closeProcess("hl2");
+			}
+			else
 			{
 				startProcess("hl2.exe");
 			}
@@ -485,12 +524,12 @@ namespace ModLauncher
 
 		private void srvStartButton_Click(object sender, EventArgs e)
 		{
-			startProcess( "hlds.exe" );
-		}
-
-		private void srvParametersText_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.KeyCode == Keys.Enter)
+		//	startProcess( "hlds.exe" );
+			if (isRunning("hlds"))
+			{
+				closeProcess("hlds");
+			}
+			else
 			{
 				startProcess("hlds.exe");
 			}
@@ -518,22 +557,8 @@ namespace ModLauncher
 			// Saving parameters into registry
 		//	SaveAdditionalParameters();
 
-			gameparams.gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
-			gameparams.srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
-
-			RefreshMapLists();
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-		//	gameparams.ShowDialog();
-			if (gameparams == null || gameparams.IsDisposed)
-				gameparams = new frmParameters(this);
-
-			if (!gameparams.Visible)
-				gameparams.Show();
-			else
-				gameparams.Focus();
+			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
+			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
 		}
 
 		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -547,9 +572,25 @@ namespace ModLauncher
 			SaveAdditionalParameters();
 		}
 
-		private void btnRefreshMods_Click(object sender, EventArgs e)
+		private void toolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			RefreshModList();
+		}
+
+		private void gameParametersText_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				startProcess("hlds.exe");
+			}
+		}
+
+		private void srvParametersText_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				startProcess("hlds.exe");
+			}
 		}
 	}
 }
