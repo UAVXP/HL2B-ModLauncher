@@ -32,7 +32,9 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.srvStartButton = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.srvParametersText = new System.Windows.Forms.TextBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.gameParametersText = new System.Windows.Forms.TextBox();
 			this.gameStartButton = new System.Windows.Forms.Button();
 			this.ttAdditionalParams = new System.Windows.Forms.ToolTip(this.components);
 			this.ttChooseModification = new System.Windows.Forms.ToolTip(this.components);
@@ -44,11 +46,10 @@
 			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnRefreshMods = new System.Windows.Forms.ToolStripMenuItem();
 			this.modList = new System.Windows.Forms.ToolStripComboBox();
-			this.gameParametersText = new System.Windows.Forms.TextBox();
-			this.srvParametersText = new System.Windows.Forms.TextBox();
-			this.tmrRunningCheck = new System.Windows.Forms.Timer(this.components);
 			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.resetWindowSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.tmrRunningCheck = new System.Windows.Forms.Timer(this.components);
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -83,6 +84,18 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Dedicated server (hlds.exe)";
 			// 
+			// srvParametersText
+			// 
+			this.srvParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.srvParametersText.ForeColor = System.Drawing.Color.Silver;
+			this.srvParametersText.Location = new System.Drawing.Point(21, 57);
+			this.srvParametersText.Name = "srvParametersText";
+			this.srvParametersText.Size = new System.Drawing.Size(196, 20);
+			this.srvParametersText.TabIndex = 30;
+			this.srvParametersText.TextChanged += new System.EventHandler(this.srvParametersText_TextChanged);
+			this.srvParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.srvParametersText_KeyDown);
+			this.srvParametersText.Leave += new System.EventHandler(this.srvParametersText_Leave);
+			// 
 			// groupBox2
 			// 
 			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -98,6 +111,19 @@
 			this.groupBox2.TabIndex = 25;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Game (hl2.exe)";
+			// 
+			// gameParametersText
+			// 
+			this.gameParametersText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.gameParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+			this.gameParametersText.ForeColor = System.Drawing.Color.Silver;
+			this.gameParametersText.Location = new System.Drawing.Point(21, 57);
+			this.gameParametersText.Name = "gameParametersText";
+			this.gameParametersText.Size = new System.Drawing.Size(196, 20);
+			this.gameParametersText.TabIndex = 29;
+			this.gameParametersText.TextChanged += new System.EventHandler(this.gameParametersText_TextChanged);
+			this.gameParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gameParametersText_KeyDown);
+			this.gameParametersText.Leave += new System.EventHandler(this.gameParametersText_Leave);
 			// 
 			// gameStartButton
 			// 
@@ -140,8 +166,8 @@
 			this.lblGamePath.Font = new System.Drawing.Font("Segoe UI", 8F);
 			this.lblGamePath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.lblGamePath.Name = "lblGamePath";
-			this.lblGamePath.Size = new System.Drawing.Size(117, 17);
-			this.lblGamePath.Text = "toolStripStatusLabel1";
+			this.lblGamePath.Size = new System.Drawing.Size(108, 17);
+			this.lblGamePath.Text = "Game: <unknown>";
 			// 
 			// menuStrip1
 			// 
@@ -187,37 +213,11 @@
 			this.modList.Size = new System.Drawing.Size(121, 23);
 			this.modList.SelectedIndexChanged += new System.EventHandler(this.modList_SelectedIndexChanged);
 			// 
-			// gameParametersText
-			// 
-			this.gameParametersText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.gameParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-			this.gameParametersText.ForeColor = System.Drawing.Color.Silver;
-			this.gameParametersText.Location = new System.Drawing.Point(21, 57);
-			this.gameParametersText.Name = "gameParametersText";
-			this.gameParametersText.Size = new System.Drawing.Size(196, 20);
-			this.gameParametersText.TabIndex = 29;
-			this.gameParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gameParametersText_KeyDown);
-			// 
-			// srvParametersText
-			// 
-			this.srvParametersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-			this.srvParametersText.ForeColor = System.Drawing.Color.Silver;
-			this.srvParametersText.Location = new System.Drawing.Point(21, 57);
-			this.srvParametersText.Name = "srvParametersText";
-			this.srvParametersText.Size = new System.Drawing.Size(196, 20);
-			this.srvParametersText.TabIndex = 30;
-			this.srvParametersText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.srvParametersText_KeyDown);
-			// 
-			// tmrRunningCheck
-			// 
-			this.tmrRunningCheck.Enabled = true;
-			this.tmrRunningCheck.Interval = 500;
-			this.tmrRunningCheck.Tick += new System.EventHandler(this.tmrRunningCheck_Tick);
-			// 
 			// viewToolStripMenuItem
 			// 
 			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.resetWindowSizeToolStripMenuItem});
+            this.resetWindowSizeToolStripMenuItem,
+            this.toolStripMenuItem1});
 			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
 			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
 			this.viewToolStripMenuItem.Text = "View";
@@ -225,9 +225,22 @@
 			// resetWindowSizeToolStripMenuItem
 			// 
 			this.resetWindowSizeToolStripMenuItem.Name = "resetWindowSizeToolStripMenuItem";
-			this.resetWindowSizeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.resetWindowSizeToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
 			this.resetWindowSizeToolStripMenuItem.Text = "Reset Window Size";
 			this.resetWindowSizeToolStripMenuItem.Click += new System.EventHandler(this.resetWindowSizeToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(184, 22);
+			this.toolStripMenuItem1.Text = "Open stdout console";
+			this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
+			// 
+			// tmrRunningCheck
+			// 
+			this.tmrRunningCheck.Enabled = true;
+			this.tmrRunningCheck.Interval = 500;
+			this.tmrRunningCheck.Tick += new System.EventHandler(this.tmrRunningCheck_Tick);
 			// 
 			// MainForm
 			// 
@@ -285,5 +298,6 @@
 		private System.Windows.Forms.Timer tmrRunningCheck;
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem resetWindowSizeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 	}
 }

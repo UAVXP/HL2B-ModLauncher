@@ -24,13 +24,22 @@ namespace ModLauncher
 		public static string gamePath = Directory.GetCurrentDirectory();
 #endif
 
-		public List<Mod> mods = new List<Mod>();
 		bool bFullyLoaded = false;
 		Settings settings = new Settings(gamePath);
+		SettingsInternal sinternal = new SettingsInternal();
+		ConsoleForm con;
 
 		public MainForm()
 		{
 			InitializeComponent();
+
+			sinternal = settings.GetSettings();
+		}
+
+		private void ConsoleLog(string text)
+		{
+			if (con != null && !con.IsDisposed && con.Visible)
+				con.Log(text);
 		}
 
 		public static bool isModDirectory(string path)
@@ -48,7 +57,7 @@ namespace ModLauncher
 				"src_main",
 				"XSI",
 			};
-			string shortDir = path.Substring(path.LastIndexOf('\\') + 1);
+			string shortDir = path.Substring(path.LastIndexOf('\\') + 1); // TODO: Path.Something
 			foreach (string dir in ignoredirs)
 			{
 				if (dir == shortDir)
@@ -157,10 +166,11 @@ namespace ModLauncher
 			return true;
 		}
 
-		public static string getModDirectory()
+		public string getModDirectory()
 		{
 		//	return getRegistryValue(FileSystem.Main.getRegistryMainPath(), "LNGameMod");
-			string regValue = getRegistryValue(getRegistryMainPath(), "LNGameMod");
+		//	string regValue = getRegistryValue(getRegistryMainPath(), "LNGameMod");
+			string regValue = sinternal.GameMod;
 			if (!isModDirectory(gamePath + "\\" + regValue))
 				return "";
 
@@ -173,14 +183,14 @@ namespace ModLauncher
 			switch (dir)
 			{
 			case "cstrike":
-				dir = "Counter-Strike Source";
+				dir = "Counter-Strike";
 				break;
 			case "hl2":
 				dir = "Half-Life 2";
 				break;
 			case "tf2":
 			case "tfc":
-				dir = "Team Fortress 2";
+				dir = "TeamFortress 2";
 				break;
 			case "hl1":
 				dir = "Half-Life Source";
@@ -195,7 +205,6 @@ namespace ModLauncher
 		public void RefreshModList()
 		{
 			modList.Items.Clear();
-			mods.Clear();
 
 			if (!Directory.Exists(gamePath))
 			{
@@ -210,52 +219,87 @@ namespace ModLauncher
 				return;
 			}
 
+			Console.WriteLine("Refreshing mods");
+			foreach (Mod_v2 mod in sinternal.Mods)
+			{
+				Console.WriteLine(string.Format("\t{0}, {1}, {2}, {3}", mod.Dir, mod.Name, mod.Parameters, mod.ServerParameters));
+			}
+
+			// TODO: Need to redo whole process: firstly do a loop on saved mods?
+		/**/
 			foreach (string dir in gamefolders)
 			{
+				Console.WriteLine("Checking " + dir + "...");
 				if (isModDirectory(dir))
 				{
 					string ddir = dir.Substring(dir.LastIndexOf('\\') + 1);
 
-					LibList liblist = new LibList(gamePath, ddir);
-					string gamename = liblist.GetGameName();
 
-					if (gamename == "") // There's still no information about this mod at liblist.gam
+					// Here was an old mod name translating and stuff
+
+
+					//	Console.WriteLine("Game: " + gamename);
+
+						//Mod_v2 mod = new Mod_v2
+						//{
+						//    Dir = ddir,
+						//    Name = ((gamename != "") ? gamename : ddir)
+						//};
+
+						//List<Mod_v2> test = sinternal.Mods; // settings.GetMods()
+						//foreach (Mod_v2 storedMod in test)
+						//{
+						////	Console.WriteLine(string.Format("{0}, {1}, {2}, {3}", storedMod.Dir, storedMod.Name, storedMod.Parameters, storedMod.ServerParameters));
+						//    if (storedMod.Dir == ddir) // Restoring parameters for mod
+						//    {
+						//        mod.Parameters = storedMod.Parameters;
+						//        mod.ServerParameters = storedMod.ServerParameters;
+						//    }
+						//}
+
+						//mods.Add(mod);
+
+					// Searching in stored mods
+					List<Mod_v2> results = sinternal.Mods.FindAll(x => x.Dir == ddir);
+					if (results.Count <= 0)
 					{
-						gamename = TranslateModDirectory(ddir); // Trying to translate mod directory with known names
+						Mod_v2 mod = new Mod_v2();
+						mod.Dir = ddir;
+					//	mod.Name = ((gamename != "") ? gamename : ddir); // NOTE: We're not using this anymore, but maybe later I'll implement an internal mod renaming
+						mod.Name = mod.Dir;
+						mod.Parameters = "";
+						mod.ServerParameters = "";
+
+						sinternal.Mods.Add(mod);
 					}
-
-				//	Console.WriteLine("Game: " + gamename);
-
-					Mod mod = new Mod
-					{
-						Dir = ddir,
-						Name = ((gamename != "") ? gamename : ddir)
-					};
-
-					List<Mod> test = settings.GetMods();
-					foreach (Mod storedMod in test)
-					{
-						if (storedMod.Dir == ddir) // Restoring parameters for mod
-						{
-							mod.Parameters = storedMod.Parameters;
-							mod.ServerParameters = storedMod.ServerParameters;
-						}
-					}
-
-				//	Console.WriteLine(string.Format("{0}, {1}, {2}", mod.Dir, mod.Name, mod.Parameters));
-					mods.Add(mod);
 				}
 			}
-			foreach (Mod mod in mods)
+		//	foreach (Mod_v2 mod in mods)
+			foreach (Mod_v2 mod in sinternal.Mods)
 			{
-				modList.Items.Add(mod.Name);
+			//	if (!isModDirectory(mod.Dir))
+			//		continue;
+
+			//	modList.Items.Add(mod.Name);
+
+				LibList liblist = new LibList(gamePath, mod.Dir);
+				string gamename = liblist.GetGameName();
+
+				if (gamename == "") // There's still no information about this mod at liblist.gam
+				{
+					gamename = TranslateModDirectory(mod.Dir); // Trying to translate mod directory with known names
+				}
+
+				modList.Items.Add((gamename != "") ? gamename : mod.Dir);
 			}
 
 			// Choosing saved mod
 			string choosedGameMod = getModDirectory();
 			int k = 0;
 			bool isModFound = false;
-			foreach (Mod val in mods)
+		//	foreach (Mod_v2 val in mods)
+			foreach (Mod_v2 val in sinternal.Mods)
+		//	foreach (Mod_v2 val in modList.Items) // TODO: Later
 			{
 				if (val.Dir == choosedGameMod)
 				{
@@ -268,7 +312,9 @@ namespace ModLauncher
 			if (!isModFound)
 			{
 				k = 0;
-				foreach (Mod val in mods)
+			//	foreach (Mod_v2 val in mods)
+				foreach (Mod_v2 val in sinternal.Mods) // TODO: Later
+			//	foreach (Mod_v2 val in modList.Items)
 				{
 					if (val.Dir.IndexOf(choosedGameMod) >= 0)
 					{
@@ -278,6 +324,29 @@ namespace ModLauncher
 					k++;
 				}
 			}
+
+		//	sinternal.Mods = mods; // ???
+		/**/
+
+			/* VXP: TODO: Later. New listing?
+				modList.Items.AddRange(sinternal.Mods.ToArray());
+				int iMods = 0;
+				foreach (Mod_v2 mod in modList.Items)
+				{
+					modList.Items[iMods] = mod.Dir;
+					iMods++;
+				}
+
+				SelectLatestStoredMod();
+			*/
+		}
+
+		private void SelectLatestStoredMod()
+		{
+			foreach (Mod_v2 mod in sinternal.Mods)
+			{
+
+			}
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -286,6 +355,8 @@ namespace ModLauncher
 			bFullyLoaded = true;
 
 			lblGamePath.Text = "Game: " + gamePath;
+
+			con = new ConsoleForm();
 		}
 
 		public void SaveAdditionalParameters() // TODO: Rename
@@ -297,31 +368,50 @@ namespace ModLauncher
 		//	mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
 		//	mods[modList.SelectedIndex].ServerParameters = srvParametersText.Text;
 
+			SaveWindowSize(this.Width, this.Height);
+
 			// Write to file
-			bool successfulSave = settings.WriteSettings(mods);
+		//	bool successfulSave = settings.WriteSettings(mods);
+		//	SettingsInternal sint = new SettingsInternal();
+		//	sint.GameMod = sinternal.GameMod;
+		//	sint.WindowSize = sinternal.WindowSize;
+		//	sint.Mods = mods;
+		//	bool successfulSave = settings.WriteSettings(sint);
+
+		//	sinternal.Mods = mods;
+
+			Console.WriteLine(String.Format("Test saving - GM: {0}, {1}x{2}", sinternal.GameMod, sinternal.WindowSize.Width, sinternal.WindowSize.Height));
+			foreach (Mod_v2 mod in sinternal.Mods)
+			{
+				Console.WriteLine(string.Format("\t{0}, {1}, {2}, {3}", mod.Dir, mod.Name, mod.Parameters, mod.ServerParameters));
+			}
+
+			bool successfulSave = settings.WriteSettings(sinternal);
 			if (!successfulSave)
 				MessageBox.Show("Mod parameters cannot be saved!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
 		//	gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
 		//	srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
-
-			SaveWindowSize(this.Width, this.Height);
 		}
 
 		private void SaveWindowSize(int width = 530, int height = 200) // Change after resizing in editor
 		{
-			setRegistryValue("LNMainWindowWidth", width.ToString());
-			setRegistryValue("LNMainWindowHeight", height.ToString());
+		//	setRegistryValue("LNMainWindowWidth", width.ToString());
+		//	setRegistryValue("LNMainWindowHeight", height.ToString());
+
+			sinternal.WindowSize = new WindowSize(width, height);
 		}
 		private void RestoreWindowSize()
 		{
 			int width = this.Width;
-			int.TryParse(getRegistryValue(getRegistryMainPath(), "LNMainWindowWidth"), out width);
+		//	int.TryParse(getRegistryValue(getRegistryMainPath(), "LNMainWindowWidth"), out width);
+			width = sinternal.WindowSize.Width;
 			if (width != 0 && width != this.Width)
 				this.Width = width;
 
 			int height = this.Height;
-			int.TryParse(getRegistryValue(getRegistryMainPath(), "LNMainWindowHeight"), out height);
+		//	int.TryParse(getRegistryValue(getRegistryMainPath(), "LNMainWindowHeight"), out height);
+			width = sinternal.WindowSize.Height;
 			if (height != 0 && height != this.Height)
 				this.Height = height;
 		}
@@ -344,10 +434,15 @@ namespace ModLauncher
 		//	gameParametersText.Text = getRegistryValue(getRegistryMainPath(), "GameParameters");
 		//	srvParametersText.Text = getRegistryValue(getRegistryMainPath(), "ServerParameters");
 
-			if (mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist
+			if (sinternal.Mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist
 
-			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
-			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+			if (modList.SelectedIndex >= 0)
+			{
+				gameParametersText.Text = sinternal.Mods[modList.SelectedIndex].Parameters;
+				srvParametersText.Text = sinternal.Mods[modList.SelectedIndex].ServerParameters;
+			}
+
+		//	sinternal.Mods = mods; // FIXME: Storing a right link, but better make mods to sinternal.Mods
 		}
 
 		private void resetWindowSizeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -384,10 +479,10 @@ namespace ModLauncher
 
 		private void startProcess(string name)
 		{
-			if (mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist and user press run
+			if (sinternal.Mods.Count <= 0) return; //prevents System.ArgumentOutOfRangeException if no mods exist and user press run
 
 		//	string choosedMod = modList.SelectedItem.ToString();
-			string choosedMod = mods[modList.SelectedIndex].Dir;
+			string choosedMod = sinternal.Mods[modList.SelectedIndex].Dir;
 			Console.WriteLine("Trying to run " + choosedMod);
 
 		//	Environment.SetEnvironmentVariable("VPROJECT", gamePath + "\\" + getModDirectory());
@@ -407,7 +502,15 @@ namespace ModLauncher
 				startInfo.FileName = String.Format(@"{0}\{1}", gamePath, name);
 				startInfo.Arguments = String.Format("-game \"{0}\" {1}",
 					choosedMod,
-					mods[modList.SelectedIndex].Parameters);
+					sinternal.Mods[modList.SelectedIndex].Parameters);
+
+				startInfo.UseShellExecute = false;
+				startInfo.RedirectStandardOutput = true;
+				startInfo.RedirectStandardError = true;
+
+			//	process.EnableRaisingEvents = true;
+				process.OutputDataReceived += (sender, args) => ConsoleLog(args.Data);
+				process.ErrorDataReceived += (sender, args) => ConsoleLog(args.Data);
 			}
 			else
 			{
@@ -416,19 +519,29 @@ namespace ModLauncher
 				startInfo.FileName = String.Format(@"{0}\bin\{1}", gamePath, name);
 				startInfo.Arguments = String.Format("-game \"{0}\" {1}",
 					choosedMod,
-					mods[modList.SelectedIndex].ServerParameters);
+					sinternal.Mods[modList.SelectedIndex].ServerParameters);
 			}
 
 			startInfo.CreateNoWindow = true;
 		//	MessageBox.Show(pathToApp + "; " + (pathToApp + "\\" + appExecutable) + "; " + ("-game " + FileSystem.Main.getModDirectory()));
 		//	Process.Start(startInfo);
-			process.StartInfo = startInfo;
 
+			process.StartInfo = startInfo;
+		
 			try
 			{
 				Console.WriteLine("\tParameters: " + startInfo.Arguments);
 				process.Start();
 
+				if (!isHLDS)
+				{
+					process.BeginOutputReadLine();
+					process.BeginErrorReadLine();
+
+				//	process.StandardOutput.BaseStream.Flush();
+
+					// https://stackoverflow.com/questions/22080431/redirectstandardoutput-doesnt-fire-until-console-process-finishes
+				}
 			}
 			catch { MessageBox.Show("Game process cannot run properly. Check executable (hl2.exe or bin\\hlds.exe) for existance", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 		//	Directory.SetCurrentDirectory(oldCurDir);
@@ -479,13 +592,12 @@ namespace ModLauncher
 			Process[] processes = Process.GetProcessesByName(name);
 			foreach (Process proc in processes)
 			{
-				bool bSamePath = false;
 				try
 				{
-					bSamePath = Path.GetDirectoryName(proc.Modules[0].FileName).Equals(gamePath);
+					return	Path.GetDirectoryName(proc.Modules[0].FileName).Equals(gamePath) ||
+							Path.GetDirectoryName(proc.Modules[0].FileName).Equals(String.Format("{0}\\bin", gamePath));
 				}
-				catch { continue; }
-				return bSamePath;
+				catch { return false; }
 			}
 
 			return false;
@@ -551,14 +663,15 @@ namespace ModLauncher
 				return;
 
 		//	string choosedMod = (sender as ComboBox).SelectedItem.ToString();
-			string choosedMod = mods[modList.SelectedIndex].Dir;
-			setRegistryValue("LNGameMod", choosedMod);
+			string choosedMod = sinternal.Mods[modList.SelectedIndex].Dir;
+		//	setRegistryValue("LNGameMod", choosedMod);
+			sinternal.GameMod = choosedMod;
 
 			// Saving parameters into registry
 		//	SaveAdditionalParameters();
 
-			gameParametersText.Text = mods[modList.SelectedIndex].Parameters;
-			srvParametersText.Text = mods[modList.SelectedIndex].ServerParameters;
+			gameParametersText.Text = sinternal.Mods[modList.SelectedIndex].Parameters;
+			srvParametersText.Text = sinternal.Mods[modList.SelectedIndex].ServerParameters;
 		}
 
 		private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -581,7 +694,7 @@ namespace ModLauncher
 		{
 			if (e.KeyCode == Keys.Enter)
 			{
-				startProcess("hlds.exe");
+				startProcess("hl2.exe");
 			}
 		}
 
@@ -591,6 +704,37 @@ namespace ModLauncher
 			{
 				startProcess("hlds.exe");
 			}
+		}
+
+		private void gameParametersText_TextChanged(object sender, EventArgs e)
+		{
+			sinternal.Mods[modList.SelectedIndex].Parameters = gameParametersText.Text;
+		}
+
+		private void srvParametersText_TextChanged(object sender, EventArgs e)
+		{
+			sinternal.Mods[modList.SelectedIndex].ServerParameters = srvParametersText.Text;
+		}
+
+		private void gameParametersText_Leave(object sender, EventArgs e)
+		{
+			SaveAdditionalParameters();
+		}
+
+		private void srvParametersText_Leave(object sender, EventArgs e)
+		{
+			SaveAdditionalParameters();
+		}
+
+		private void toolStripMenuItem1_Click_1(object sender, EventArgs e)
+		{
+			if (con == null || con.IsDisposed)
+				con = new ConsoleForm();
+
+			if (!con.Visible)
+				con.Show();
+			else
+				con.Focus();
 		}
 	}
 }
