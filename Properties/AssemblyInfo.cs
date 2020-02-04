@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VXP")]
 [assembly: AssemblyProduct("ModLauncher")]
-[assembly: AssemblyCopyright("Copyright © VXP 2018")]
+[assembly: AssemblyCopyright("Copyright © VXP 2020")]
 [assembly: AssemblyTrademark("2018 Valve Corporation. All rights reserved. Valve, the Valve logo, Half-Life, the Half-Life logo are trademarks and/or registered trademarks of Valve Corporation. All other trademarks are property of their respective owners.")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.4.0")]
-[assembly: AssemblyFileVersion("0.9.4.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
