@@ -48,6 +48,7 @@
 			this.modList = new System.Windows.Forms.ToolStripComboBox();
 			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.resetWindowSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.tmrRunningCheck = new System.Windows.Forms.Timer(this.components);
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -165,8 +166,8 @@
 			this.lblGamePath.Font = new System.Drawing.Font("Segoe UI", 8F);
 			this.lblGamePath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(223)))), ((int)(((byte)(200)))));
 			this.lblGamePath.Name = "lblGamePath";
-			this.lblGamePath.Size = new System.Drawing.Size(117, 17);
-			this.lblGamePath.Text = "toolStripStatusLabel1";
+			this.lblGamePath.Size = new System.Drawing.Size(108, 17);
+			this.lblGamePath.Text = "Game: <unknown>";
 			// 
 			// menuStrip1
 			// 
@@ -215,7 +216,8 @@
 			// viewToolStripMenuItem
 			// 
 			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.resetWindowSizeToolStripMenuItem});
+            this.resetWindowSizeToolStripMenuItem,
+            this.toolStripMenuItem1});
 			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
 			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
 			this.viewToolStripMenuItem.Text = "View";
@@ -223,9 +225,16 @@
 			// resetWindowSizeToolStripMenuItem
 			// 
 			this.resetWindowSizeToolStripMenuItem.Name = "resetWindowSizeToolStripMenuItem";
-			this.resetWindowSizeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+			this.resetWindowSizeToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
 			this.resetWindowSizeToolStripMenuItem.Text = "Reset Window Size";
 			this.resetWindowSizeToolStripMenuItem.Click += new System.EventHandler(this.resetWindowSizeToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(184, 22);
+			this.toolStripMenuItem1.Text = "Open stdout console";
+			this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
 			// 
 			// tmrRunningCheck
 			// 
@@ -289,5 +298,6 @@
 		private System.Windows.Forms.Timer tmrRunningCheck;
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem resetWindowSizeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 	}
 }
