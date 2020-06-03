@@ -50,6 +50,7 @@
 			this.resetWindowSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.tmrRunningCheck = new System.Windows.Forms.Timer(this.components);
+			this.tspManageMods = new System.Windows.Forms.ToolStripMenuItem();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
@@ -175,7 +176,8 @@
             this.fileToolStripMenuItem,
             this.btnRefreshMods,
             this.modList,
-            this.viewToolStripMenuItem});
+            this.viewToolStripMenuItem,
+            this.tspManageMods});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(514, 27);
@@ -242,6 +244,14 @@
 			this.tmrRunningCheck.Interval = 500;
 			this.tmrRunningCheck.Tick += new System.EventHandler(this.tmrRunningCheck_Tick);
 			// 
+			// tspManageMods
+			// 
+			this.tspManageMods.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.tspManageMods.Name = "tspManageMods";
+			this.tspManageMods.Size = new System.Drawing.Size(33, 23);
+			this.tspManageMods.Text = "M.";
+			this.tspManageMods.Click += new System.EventHandler(this.tspManageMods_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,5 +309,6 @@
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem resetWindowSizeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem tspManageMods;
 	}
 }

@@ -736,5 +736,11 @@ namespace ModLauncher
 			else
 				con.Focus();
 		}
+
+		private void tspManageMods_Click(object sender, EventArgs e)
+		{
+			ModManager man = new ModManager();
+			man.ShowDialog();
+		}
 	}
 }
