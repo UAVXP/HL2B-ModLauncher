@@ -19,7 +19,7 @@ namespace ModLauncher
 	public partial class MainForm : Form
 	{
 #if DEBUG
-		public static string gamePath = @"D:\Games\HL2Leak\AHL2_R";
+		public static string gamePath = @"D:\Games\HL2Leak\AHL2_Rewrite";
 #else
 		public static string gamePath = Directory.GetCurrentDirectory();
 #endif
@@ -204,6 +204,7 @@ namespace ModLauncher
 
 		public void RefreshModList()
 		{
+			string maxLengthGameName = "";
 			modList.Items.Clear();
 
 			if (!Directory.Exists(gamePath))
@@ -290,7 +291,11 @@ namespace ModLauncher
 					gamename = TranslateModDirectory(mod.Dir); // Trying to translate mod directory with known names
 				}
 
-				modList.Items.Add((gamename != "") ? gamename : mod.Dir);
+				string fullgamename = (gamename != "") ? gamename : mod.Dir;
+				modList.Items.Add(fullgamename);
+
+				if (fullgamename.Length > maxLengthGameName.Length)
+					maxLengthGameName = fullgamename;
 			}
 
 			// Choosing saved mod
@@ -325,8 +330,8 @@ namespace ModLauncher
 				}
 			}
 
-		//	sinternal.Mods = mods; // ???
-		/**/
+			//	sinternal.Mods = mods; // ???
+			/**/
 
 			/* VXP: TODO: Later. New listing?
 				modList.Items.AddRange(sinternal.Mods.ToArray());
@@ -339,6 +344,20 @@ namespace ModLauncher
 
 				SelectLatestStoredMod();
 			*/
+
+			// Resize the dropdown
+			Graphics g = Graphics.FromHwnd( this.Handle );
+			SizeF stringsize = g.MeasureString( maxLengthGameName, modList.Font );
+
+			int endWidth = 0;
+			endWidth += modList.Margin.Left;
+			endWidth += (int)stringsize.Width;
+			endWidth += 13; // Width of a dropdown arrow button on Win7/.NET Framework 4.8 (boo-hoo, magic constant)
+			endWidth += modList.Margin.Right;
+
+			
+			modList.Size = new Size( endWidth, modList.Size.Height );
+			modList.DropDownWidth = endWidth;
 		}
 
 		private void SelectLatestStoredMod()

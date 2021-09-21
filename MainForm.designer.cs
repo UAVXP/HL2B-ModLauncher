@@ -154,7 +154,7 @@
 			this.statusStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(87)))), ((int)(((byte)(82)))));
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblGamePath});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 139);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 140);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(514, 22);
 			this.statusStrip1.SizingGrip = false;
@@ -176,6 +176,7 @@
             this.btnRefreshMods,
             this.modList,
             this.viewToolStripMenuItem});
+			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(514, 27);
@@ -193,7 +194,7 @@
 			// quitToolStripMenuItem
 			// 
 			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-			this.quitToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+			this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.quitToolStripMenuItem.Text = "Quit";
 			this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
 			// 
@@ -209,8 +210,9 @@
 			// 
 			this.modList.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
 			this.modList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.modList.DropDownWidth = 120;
 			this.modList.Name = "modList";
-			this.modList.Size = new System.Drawing.Size(121, 23);
+			this.modList.Size = new System.Drawing.Size(120, 23);
 			this.modList.SelectedIndexChanged += new System.EventHandler(this.modList_SelectedIndexChanged);
 			// 
 			// viewToolStripMenuItem
@@ -247,7 +249,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::ModLauncher.Properties.Resources.background002;
-			this.ClientSize = new System.Drawing.Size(514, 161);
+			this.ClientSize = new System.Drawing.Size(514, 162);
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.groupBox2);

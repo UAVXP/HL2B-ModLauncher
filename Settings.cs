@@ -144,7 +144,11 @@ namespace ModLauncher
 				else
 					fstream = new FileStream(this.GamePath + "\\ModLauncher.dat", FileMode.Open, FileAccess.Read); // Just try to open it
 			}
-			catch (UnauthorizedAccessException ex) // If the file is actually not accessible or somehow stays read-only
+			catch ( UnauthorizedAccessException ex ) // If the file is actually not accessible or somehow stays read-only
+			{
+				return new SettingsInternal();
+			}
+			catch ( DirectoryNotFoundException ex )
 			{
 				return new SettingsInternal();
 			}
